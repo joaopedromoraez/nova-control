@@ -28,8 +28,14 @@ depends:
   - udev
   - passwd
 
+# nome do processo completo no ps/htop (opcional: sem ele só o nome curto muda)
+recommends:
+  - python3-setproctitle
+
 overrides:
   rpm:
+    recommends:
+      - python3-setproctitle
     depends:
       - python3 >= 3.10
       - python3-gobject
@@ -38,6 +44,8 @@ overrides:
       - systemd-udev
       - shadow-utils
   archlinux:
+    recommends:
+      - python-setproctitle
     depends:
       - python
       - python-gobject

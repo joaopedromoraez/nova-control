@@ -7,6 +7,7 @@ import sys
 
 from . import config
 from .i18n import _
+from .procname import set_process_name
 from .lighting import EFFECTS, ELC, LightingError, apply_lighting_config, find_device
 from .thermal import PROFILE_LABELS, Thermal, ThermalError
 
@@ -114,6 +115,7 @@ def main(argv=None):
     sub.add_parser("apply", help=_("apply the saved settings once"))
 
     a = p.parse_args(argv)
+    set_process_name(sys.argv[1:] if argv is None else argv)
     if a.cmd in (None, "gui"):
         from .gui import main as gui_main
         return gui_main()

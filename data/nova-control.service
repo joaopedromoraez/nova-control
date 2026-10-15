@@ -4,6 +4,8 @@ After=graphical-session.target
 
 [Service]
 ExecStart=/usr/bin/env nova-control daemon
+# sem isto o journal identifica os logs como "env"
+SyslogIdentifier=nova-control
 Restart=on-failure
 RestartSec=5
 

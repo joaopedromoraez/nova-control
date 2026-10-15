@@ -865,6 +865,7 @@ class Window(Adw.ApplicationWindow):
 class App(Adw.Application):
     def __init__(self):
         super().__init__(application_id=APP_ID)
+        GLib.set_application_name("Nova Control")
         self.connect("activate", self._activate)
 
     def _activate(self, app):

@@ -103,6 +103,14 @@
   <content_rating type="oars-1.1"/>
 
   <releases>
+    <release version="0.3.1" date="2026-10-15">
+      <description>
+        <ul>
+          <li>The process is shown as "nova-control" instead of "python3" in System Monitor, top and ps</li>
+          <li>Background service logs are identified as "nova-control" in the system journal</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.3.0" date="2026-10-15">
       <description>
         <ul>
