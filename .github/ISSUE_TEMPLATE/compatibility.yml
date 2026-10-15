@@ -1,0 +1,51 @@
+name: Compatibility report
+description: Tell us whether Nova Control works on your Alienware laptop
+title: "[Compatibility] <laptop model>"
+labels: ["compatibility"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for testing! Reports from other models help grow the list of supported laptops.
+        Obrigado por testar! Relatos de outros modelos ajudam a ampliar a lista de compatibilidade.
+  - type: input
+    id: model
+    attributes:
+      label: Laptop model
+      placeholder: Alienware m16 R2
+    validations:
+      required: true
+  - type: input
+    id: distro
+    attributes:
+      label: Distribution and kernel
+      description: Output of `uname -r` and your distro name
+      placeholder: Ubuntu 26.04, 7.0.0-38-generic
+    validations:
+      required: true
+  - type: checkboxes
+    id: works
+    attributes:
+      label: What works?
+      options:
+        - label: Temperatures and fan RPM
+        - label: Thermal profiles / G-Mode
+        - label: Fan boost / custom fan curve
+        - label: RGB lighting
+  - type: textarea
+    id: status
+    attributes:
+      label: Output of `nova-control status`
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: usb
+    attributes:
+      label: Output of `lsusb | grep -i 187c`
+      render: text
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Anything that did not work as expected, LED zone names you found with "Identify", etc.

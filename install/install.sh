@@ -38,6 +38,7 @@ chmod 755 "$PREFIX/bin/nova-control"
 ln -sf "$PREFIX/bin/nova-control" /usr/local/bin/nova-control
 
 echo "==> Instalando regras udev"
+getent group plugdev >/dev/null || groupadd --system plugdev  # Fedora/Arch não têm por padrão
 install -m 644 "$SRC/install/99-nova-control.rules" /etc/udev/rules.d/99-nova-control.rules
 udevadm control --reload-rules
 udevadm trigger --subsystem-match=hidraw --action=add

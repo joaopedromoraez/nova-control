@@ -1,15 +1,18 @@
 <div align="center">
 
-<img src="data/icons/io.github.nova_control.svg" width="128" height="128" alt="Logo do Nova Control">
+<img src="data/icons/io.github.nova_control.svg" width="128" height="128" alt="Nova Control logo">
 
 # Nova Control
 
-**Controle de fans, perfis térmicos e iluminação RGB para notebooks Alienware no Linux.**
+**Alienware Command Center (AWCC) alternative for Linux: fan control, thermal profiles, G-Mode and AlienFX RGB lighting.**
 
-Uma alternativa nativa ao Alienware Command Center, feita para o GNOME.
+A native GTK4 / libadwaita app for Alienware gaming laptops on Ubuntu, Fedora and other Linux distributions.
 
-![Licença MIT](https://img.shields.io/badge/licen%C3%A7a-MIT-3FBAF9)
-![Linux](https://img.shields.io/badge/plataforma-Linux-A08EFA)
+**English** · [Português](README.pt-BR.md)
+
+[![MIT License](https://img.shields.io/badge/license-MIT-3FBAF9)](LICENSE)
+[![Latest release](https://img.shields.io/github/v/release/joaopedromoraez/nova-control?color=A08EFA)](https://github.com/joaopedromoraez/nova-control/releases)
+![Linux](https://img.shields.io/badge/platform-Linux-A08EFA)
 ![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-3FBAF9)
 ![GTK4 + libadwaita](https://img.shields.io/badge/GTK4-libadwaita-A08EFA)
 
@@ -18,45 +21,47 @@ Uma alternativa nativa ao Alienware Command Center, feita para o GNOME.
 ---
 
 <p align="center">
-  <img src="docs/screenshot-curve.png" width="49%" alt="Aba Térmico e Fans com editor de curva">
-  <img src="docs/screenshot-lighting.png" width="49%" alt="Aba Iluminação com controles por zona">
+  <img src="docs/screenshot-curve.png" width="49%" alt="Nova Control fan curve editor and thermal profiles on an Alienware laptop running Linux">
+  <img src="docs/screenshot-lighting.png" width="49%" alt="Nova Control AlienFX RGB keyboard lighting controls per zone on Linux">
 </p>
 
-## Recursos
+Dell ships the **Alienware Command Center** only for Windows. On Linux there is no official way to change fan speed, switch thermal profiles, enable **G-Mode** or set the **RGB keyboard lighting**. Nova Control fills that gap with a native desktop app, a background service and a command-line tool. It runs **without root** after a one-time install.
 
-### 🌡️ Térmico e fans
-- **Monitor em tempo real** de temperatura (CPU/GPU) e rotação das fans
-- **Perfis térmicos do firmware**: Frio, Silencioso, Equilibrado, Equilibrado+ e Desempenho (ativa o **G-Mode**)
-- **Três modos de controle das fans**:
-  - **Automático**: o firmware decide
-  - **Boost fixo**: velocidade extra definida por você, por fan
-  - **Curva personalizada**: arraste os pontos de um gráfico temperatura × velocidade
+## Features
 
-### 💡 Iluminação RGB
-- Efeitos **estático, respiração, piscar, transição entre 2 cores, espectro, onda arco-íris** e desligado
-- Controle de **brilho**, **velocidade** e **cores**, por zona ou em todas juntas
-- Botão **Identificar**, que pisca uma zona por vez para você descobrir qual LED é qual e dar nome a ele
-- Cores prontas com um clique
+### 🌡️ Fan control and thermal profiles
+- **Live monitoring** of CPU/GPU temperature and fan RPM
+- **Firmware thermal profiles**: Cool, Quiet, Balanced, Balanced Performance and Performance (**G-Mode**)
+- **Three fan control modes**:
+  - **Automatic**: firmware-managed
+  - **Fixed boost**: a manual speed boost per fan
+  - **Custom fan curve**: drag points on a temperature × speed graph
 
-### ⚙️ Em segundo plano
-- **Serviço de usuário (systemd)** que reaplica suas configurações no login e ao voltar da suspensão
-- A curva de fans continua funcionando **com o app fechado**
-- **Linha de comando** completa para scripts e atalhos
+### 💡 AlienFX RGB lighting
+- Effects: **static, breathing, pulse, two-color morph, spectrum, rainbow wave** and off
+- **Brightness**, **speed** and **color** per zone or for all zones at once
+- **Identify** button that flashes one zone at a time, so you can find and name each LED zone (keyboard, logo, rear strip…)
+- One-click color presets
 
-## Compatibilidade
+### ⚙️ Runs in the background
+- A **systemd user service** re-applies your settings at login and after resume from suspend
+- The custom fan curve keeps working **with the app closed**
+- A full **command-line interface** for scripts and keyboard shortcuts
 
-| Testado em | |
+## Compatibility
+
+| Tested on | |
 |---|---|
-| Notebook | Alienware m15 R6 |
-| Sistema | Ubuntu 26.04 (GNOME) |
+| Laptop | Alienware m15 R6 |
+| OS | Ubuntu 26.04 (GNOME) |
 | Kernel | 7.0 |
 
-Outros modelos Alienware recentes devem funcionar se:
+Other recent Alienware laptops (m15, m16, m17, m18, x15, x16, x17 series) should work if:
 
-- o kernel carregar o driver `alienware_wmi` com suporte a AWCC (fans e perfis; kernel 6.15 ou mais novo);
-- o notebook tiver o controlador de LEDs **AW-ELC** (USB `187c:0550` ou `187c:0551`).
+- the kernel loads the `alienware_wmi` driver with **AWCC** support (fans and thermal profiles; kernel 6.15 or newer);
+- the laptop has the **AW-ELC** lighting controller (USB `187c:0550` or `187c:0551`).
 
-Confira com:
+Check with:
 
 ```bash
 lsusb | grep 187c
@@ -67,85 +72,92 @@ cat /sys/class/platform-profile/*/name
 ```
 
 > [!NOTE]
-> Testou em outro modelo? Abra uma issue contando se funcionou, mesmo que parcialmente. Isso ajuda a ampliar a lista de compatibilidade.
+> Tried it on another model? [Send a compatibility report](https://github.com/joaopedromoraez/nova-control/issues/new?template=compatibility.yml), even if it only partially works. It helps grow the list of supported laptops.
 
-## Instalação
+## Installation
 
-### Dependências
+### Dependencies
 
-No Ubuntu/Debian (já vêm instaladas no Ubuntu com GNOME):
+On Ubuntu/Debian (already installed on Ubuntu with GNOME):
 
 ```bash
 sudo apt install python3 python3-gi gir1.2-gtk-4.0 gir1.2-adw-1
 ```
 
-O app requer GTK 4.14+ e libadwaita 1.7+.
-
-### Instalar
-
-Clone o repositório e rode o instalador:
+On Fedora:
 
 ```bash
+sudo dnf install python3 python3-gobject gtk4 libadwaita
+```
+
+Requires GTK 4.14+ and libadwaita 1.7+.
+
+### Install
+
+```bash
+git clone https://github.com/joaopedromoraez/nova-control.git
+cd nova-control
 sudo ./install/install.sh
 ```
 
-O instalador:
+The installer:
 
-1. copia o app para `/opt/nova-control` e cria o comando `nova-control`;
-2. instala as **regras udev** que permitem controlar o hardware **sem root** (acesso para o grupo `plugdev`);
-3. adiciona o atalho no menu de aplicativos e os ícones;
-4. ativa o serviço de usuário `nova-control.service`.
+1. copies the app to `/opt/nova-control` and adds the `nova-control` command;
+2. installs **udev rules** so the hardware can be controlled **without root** (access for the `plugdev` group);
+3. adds the app launcher and icons;
+4. enables the `nova-control.service` user service.
 
-Depois é só abrir **Nova Control** no menu de aplicativos.
+Then open **Nova Control** from your app menu.
 
 > [!TIP]
-> Se o seu usuário não estava no grupo `plugdev`, o instalador o adiciona. Nesse caso, saia e entre de novo na sessão.
+> If your user was not in the `plugdev` group, the installer adds it. Log out and back in for that to take effect.
 
-## Linha de comando
+## Command line
 
 ```bash
-nova-control                       # abre a interface gráfica
-nova-control status                # temperaturas, fans, perfil e LEDs
-nova-control profile performance  # perfil térmico (ativa o G-Mode)
-nova-control boost 1 60            # fan 1 (CPU) com 60% de boost
+nova-control                       # open the GUI
+nova-control status                # temperatures, fans, profile and LEDs
+nova-control profile performance   # thermal profile (enables G-Mode)
+nova-control boost 1 60            # fan 1 (CPU) at 60% boost
 nova-control light static 00b4ff --brightness 80
 nova-control light morph ff0000 --color2 0000ff --speed 70
-nova-control light wave            # onda arco-íris
-nova-control identify 0            # pisca só a zona 0
+nova-control light wave            # rainbow wave
+nova-control identify 0            # flash only zone 0
 ```
 
-## Como funciona
+## How it works
 
-O Nova Control não usa drivers próprios: ele conversa diretamente com interfaces que o kernel Linux já oferece.
+Nova Control ships no kernel driver. It talks directly to interfaces the Linux kernel already provides.
 
-| Função | Interface |
+| Feature | Interface |
 |---|---|
-| Perfis térmicos e G-Mode | `/sys/class/platform-profile/*/profile` (driver `alienware_wmi`) |
-| Velocidade das fans | `/sys/class/hwmon/<alienware_wmi>/fanN_boost` (0–255) |
-| Temperaturas e RPM | `/sys/class/hwmon/<alienware_wmi>/{temp,fan}N_input` |
-| Iluminação RGB | `/dev/hidrawN` do controlador AW-ELC, protocolo ELC via *feature reports* HID de 33 bytes |
+| Thermal profiles and G-Mode | `/sys/class/platform-profile/*/profile` (`alienware_wmi` driver) |
+| Fan speed | `/sys/class/hwmon/<alienware_wmi>/fanN_boost` (0–255) |
+| Temperatures and RPM | `/sys/class/hwmon/<alienware_wmi>/{temp,fan}N_input` |
+| RGB lighting | `/dev/hidrawN` of the AW-ELC controller, ELC protocol over 33-byte HID feature reports |
 
 ```
 nova-control/
 ├── nova_control/
-│   ├── gui.py        # interface GTK4 / libadwaita
-│   ├── thermal.py    # perfis, fans e sensores (sysfs)
-│   ├── lighting.py   # driver userspace do AW-ELC
-│   ├── daemon.py     # serviço: reaplica configurações e roda a curva
+│   ├── gui.py        # GTK4 / libadwaita interface
+│   ├── thermal.py    # profiles, fans and sensors (sysfs)
+│   ├── lighting.py   # userspace AW-ELC driver
+│   ├── daemon.py     # service: re-applies settings and runs the fan curve
 │   ├── config.py     # ~/.config/nova-control/config.json
-│   └── cli.py        # linha de comando
-├── data/icons/       # ícones do app
-├── install/          # instalador, regras udev, .desktop e serviço systemd
+│   └── cli.py        # command line
+├── data/icons/       # app icons
+├── install/          # installer, udev rules, .desktop file and systemd unit
 └── bin/nova-control
 ```
 
-## Observações
+## Notes
 
-- O seletor **Modo de energia** do GNOME também altera o perfil térmico. Vale a última escolha feita, no GNOME ou no Nova Control.
-- No modo **Boost fixo** o firmware é colocado no perfil `custom`, onde o controle manual das fans é confiável.
-- As configurações ficam em `~/.config/nova-control/config.json`.
+- GNOME's **Power Mode** switch also changes the thermal profile. The most recent choice wins, whether made in GNOME or in Nova Control.
+- In **Fixed boost** mode the firmware is switched to the `custom` profile, where manual fan control is reliable.
+- The interface is currently in Brazilian Portuguese. Translations are welcome.
+- Settings are stored in `~/.config/nova-control/config.json`.
 
-## Desinstalar
+## Uninstall
 
 ```bash
 systemctl --user disable --now nova-control.service
@@ -155,12 +167,14 @@ systemctl --user disable --now nova-control.service
 sudo rm -rf /opt/nova-control /usr/local/bin/nova-control /etc/udev/rules.d/99-nova-control.rules /usr/share/applications/io.github.nova_control.desktop /usr/lib/systemd/user/nova-control.service /usr/share/icons/hicolor/scalable/apps/io.github.nova_control*.svg /usr/share/icons/hicolor/symbolic/apps/io.github.nova_control-symbolic.svg
 ```
 
-## Créditos
+## Credits
 
-O protocolo do controlador AW-ELC foi documentado pelos projetos [OpenRGB](https://gitlab.com/CalcProgrammer1/OpenRGB) e [alienfx-tools](https://github.com/T-Troll/alienfx-tools). O suporte a fans e perfis vem do driver `alienware-wmi` do kernel Linux.
+The AW-ELC lighting protocol was documented by [OpenRGB](https://gitlab.com/CalcProgrammer1/OpenRGB) and [alienfx-tools](https://github.com/T-Troll/alienfx-tools). Fan and thermal profile support comes from the Linux kernel `alienware-wmi` driver.
 
-*Alienware é marca registrada da Dell Inc. Este projeto não tem afiliação com a Dell nem com a Alienware.*
+*Alienware is a registered trademark of Dell Inc. This project is not affiliated with Dell or Alienware.*
 
-## Licença
+## License
 
-Distribuído sob a [licença MIT](LICENSE).
+Released under the [MIT License](LICENSE).
+
+If Nova Control is useful to you, please ⭐ the repository: it helps other Alienware owners on Linux find it.
