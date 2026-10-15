@@ -103,6 +103,13 @@
   <content_rating type="oars-1.1"/>
 
   <releases>
+    <release version="0.2.1" date="2026-10-15">
+      <description>
+        <ul>
+          <li>Fix the About and hardware permissions dialogs not opening</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.2.0" date="2026-10-15">
       <description>
         <ul>

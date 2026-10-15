@@ -108,6 +108,21 @@ def po_files() -> list[str]:
     return sorted(f[:-3] for f in os.listdir(PO_DIR) if f.endswith(".po"))
 
 
+def shadowed_underscore() -> list[str]:
+    """Lugares que usam `_` como variável: isso esconde a função de tradução _() naquele escopo."""
+    problems = []
+    for name in sorted(os.listdir(SRC_DIR)):
+        if not name.endswith(".py") or name == "i18n.py":
+            continue
+        tree = ast.parse(open(os.path.join(SRC_DIR, name), encoding="utf-8").read())
+        for node in ast.walk(tree):
+            if isinstance(node, ast.arg) and node.arg == "_":
+                problems.append(f"nova_control/{name}:{node.lineno}")
+            elif isinstance(node, ast.Name) and node.id == "_" and isinstance(node.ctx, ast.Store):
+                problems.append(f"nova_control/{name}:{node.lineno}")
+    return problems
+
+
 def missing(entries, catalog: dict) -> list[str]:
     return [m for m, p, _r in entries if (m if p is None else (m, p)) not in catalog]
 
@@ -122,6 +137,9 @@ def main(argv: list[str]) -> int:
                 print(f"{lang}.po: sem tradução: {m!r}")
             bad += len(miss)
         print(f"{len(entries)} textos, {bad} sem tradução")
+        for where in shadowed_underscore():
+            print(f"{where}: '_' usado como variável esconde a função de tradução _(); use outro nome")
+            bad += 1
         return 1 if bad else 0
 
     langs = po_files()

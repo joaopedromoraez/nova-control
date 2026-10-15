@@ -214,7 +214,7 @@ class CurveEditor(Gtk.Widget):
         self.points[i] = [round(max(lo, min(hi, t))), round(max(0, min(100, p)))]
         self.queue_draw()
 
-    def _end(self, *_):
+    def _end(self, *_args):
         if self._drag_idx is not None:
             self._drag_idx = None
             self.queue_draw()
@@ -343,7 +343,7 @@ class Window(Adw.ApplicationWindow):
         else:
             self.banner.set_revealed(False)
 
-    def _show_install_help(self, *_):
+    def _show_install_help(self, *_args):
         d = Adw.AlertDialog(
             heading=_("Hardware permissions"),
             body=_("Controlling fans, profiles and LEDs requires access to kernel files that, by default, "
@@ -357,7 +357,7 @@ class Window(Adw.ApplicationWindow):
         d.add_response("ok", _("OK"))
         d.present(self)
 
-    def _about(self, *_):
+    def _about(self, *_args):
         about = Adw.AboutDialog(
             application_name="Nova Control",
             version=__version__,
@@ -596,7 +596,7 @@ class Window(Adw.ApplicationWindow):
         info = Adw.PreferencesGroup(title=_("Controller"))
         self.dev_row = Adw.ActionRow(title="AW-ELC", subtitle=_("Searching…"))
         detect = Gtk.Button(label=_("Detect zones"), valign=Gtk.Align.CENTER)
-        detect.connect("clicked", lambda *_: self._detect_zones(force=True))
+        detect.connect("clicked", lambda *_args: self._detect_zones(force=True))
         self.dev_row.add_suffix(detect)
         info.add(self.dev_row)
         page.add(info)

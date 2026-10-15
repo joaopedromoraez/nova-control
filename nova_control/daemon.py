@@ -64,7 +64,7 @@ def main(argv: list[str] | None = None) -> int:
 
     running = True
 
-    def stop(*_):
+    def stop(*_args):
         nonlocal running
         running = False
 

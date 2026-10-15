@@ -91,7 +91,7 @@ def parse_po(path: str) -> dict:
                 if field:
                     entry[field] = entry.get(field, "") + _unquote(line)
             else:
-                key, _, rest = line.partition(" ")
+                key, _sep, rest = line.partition(" ")
                 if key == "msgid" and any(k.startswith("msgstr") for k in entry):
                     flush()  # entrada nova sem linha em branco separando
                 field = key
