@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Nova Control
+GenericName=Controle de fans e RGB
+Comment=Perfis térmicos, fans e iluminação RGB para notebooks Alienware
+Exec=nova-control
+Icon=io.github.nova_control
+Terminal=false
+Categories=Settings;HardwareSettings;System;
+Keywords=alienware;fan;rgb;led;thermal;gmode;
+StartupWMClass=io.github.nova_control

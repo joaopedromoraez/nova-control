@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52" width="128" height="128">
+  <defs>
+    <linearGradient id="nova-ring" x1="8" y1="8" x2="44" y2="44" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#A08EFA"/>
+      <stop offset="1" stop-color="#3FBAF9"/>
+    </linearGradient>
+    <linearGradient id="nova-n" x1="14" y1="18" x2="36" y2="34" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#A97BF5"/>
+      <stop offset="1" stop-color="#35C2FA"/>
+    </linearGradient>
+  </defs>
+  <!-- placa -->
+  <rect x="2" y="2" width="48" height="48" rx="11" fill="#1B1B2A"/>
+  <g transform="translate(3.9 3.9) scale(0.85)">
+    <!-- anel + ponto em órbita -->
+    <circle cx="26" cy="26" r="18.4" fill="none" stroke="url(#nova-ring)" stroke-width="2"/>
+    <circle cx="38" cy="13.8" r="2.9" fill="#3EC0FA"/>
+    <!-- N -->
+    <path d="M 15.6 32.2 V 19.6 L 34.2 32.4 V 19.6"
+          fill="none" stroke="url(#nova-n)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

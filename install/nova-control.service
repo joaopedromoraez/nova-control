@@ -1,0 +1,11 @@
+[Unit]
+Description=Nova Control — perfis térmicos, curva de fans e iluminação
+After=graphical-session.target
+
+[Service]
+ExecStart=/usr/local/bin/nova-control daemon
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,10 @@
+# Nova Control — libera o hardware para usuários do grupo plugdev.
+
+# Controlador de iluminação AW-ELC (USB 187c:0550 / 0551)
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="187c", ATTRS{idProduct}=="0550|0551", MODE="0660", GROUP="plugdev", TAG+="uaccess"
+
+# Boost das fans (driver alienware_wmi / AWCC)
+SUBSYSTEM=="hwmon", ATTR{name}=="alienware_wmi", RUN+="/bin/sh -c 'chgrp plugdev /sys%p/fan*_boost && chmod g+w /sys%p/fan*_boost'"
+
+# Perfis térmicos (inclui G-Mode via "performance")
+SUBSYSTEM=="platform-profile", ATTR{name}=="alienware-wmi", RUN+="/bin/sh -c 'chgrp plugdev /sys%p/profile && chmod g+w /sys%p/profile'"
