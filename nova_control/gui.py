@@ -6,6 +6,7 @@ import os
 import subprocess
 import sys
 import threading
+import time
 
 import gi
 
@@ -29,7 +30,14 @@ CSS = """
 .rpm { font-feature-settings: "tnum"; }
 .sensor-card { padding: 14px 18px; border-radius: 12px; }
 levelbar.fan block.filled { background-color: #00b4ff; }
+.splash-logo { animation: nova-pulse 1.8s ease-in-out infinite; }
+@keyframes nova-pulse {
+  0%, 100% { opacity: 1; -gtk-icon-transform: scale(1); }
+  50% { opacity: 0.6; -gtk-icon-transform: scale(0.92); }
+}
+.splash-title { font-size: 30px; font-weight: 800; }
 """
+SPLASH_MIN_SECONDS = 1.2
 
 
 def rgba_to_tuple(rgba: Gdk.RGBA) -> list[int]:
@@ -40,6 +48,23 @@ def tuple_to_rgba(c) -> Gdk.RGBA:
     rgba = Gdk.RGBA()
     rgba.red, rgba.green, rgba.blue, rgba.alpha = c[0] / 255, c[1] / 255, c[2] / 255, 1.0
     return rgba
+
+
+def probe_elc() -> dict:
+    """Consulta o controlador de LEDs. Seguro para rodar fora da thread da interface."""
+    dev = find_device()
+    if not dev:
+        return {"summary": "Não encontrado"}
+    try:
+        with ELC(dev) as elc:
+            fw = elc.firmware()
+            conf = elc.config()
+    except (LightingError, OSError) as e:
+        return {"summary": str(e)}
+    if conf and 1 <= conf[1] <= 64:
+        return {"zones": conf[1],
+                "summary": f"{dev} · firmware {fw or '?'} · plataforma 0x{conf[0]:04x} · {conf[1]} zonas"}
+    return {"summary": f"{dev} · firmware {fw or '?'} · sem resposta de configuração"}
 
 
 def service_active() -> bool:
@@ -202,12 +227,59 @@ class Window(Adw.ApplicationWindow):
         super().__init__(application=app, title="Nova Control")
         self.set_default_size(820, 900)
         self.cfg = config.load()
-        self.thermal = Thermal()
+        self.thermal: Thermal | None = None
+        self._elc_info: dict = {}
         self._light_lock = threading.Lock()
         self._light_pending = False
         self._light_timer = 0
         self._updating = False
 
+        # tela de carregamento enquanto o hardware é detectado em segundo plano
+        self.root = Gtk.Stack(transition_type=Gtk.StackTransitionType.CROSSFADE, transition_duration=450)
+        self.root.add_named(self._build_splash(), "splash")
+        self.set_content(self.root)
+        self._loading_started = time.monotonic()
+        threading.Thread(target=self._probe_hardware, daemon=True).start()
+
+    # ---- carregamento -----------------------------------------------------
+    def _build_splash(self):
+        view = Adw.ToolbarView()
+        view.add_top_bar(Adw.HeaderBar(show_title=False, css_classes=["flat"]))
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10,
+                      valign=Gtk.Align.CENTER, halign=Gtk.Align.CENTER, margin_bottom=48)
+        logo = Gtk.Image(icon_name=LOGO_ICON, pixel_size=128, css_classes=["splash-logo"], margin_bottom=8)
+        title = Gtk.Label(label="Nova Control", css_classes=["splash-title"])
+        spinner = Adw.Spinner(width_request=28, height_request=28, margin_top=18)
+        self.splash_status = Gtk.Label(label="Iniciando…", css_classes=["dim-label"])
+        version = Gtk.Label(label=f"versão {__version__}", css_classes=["caption", "dim-label"], margin_top=4)
+        for w in (logo, title, spinner, self.splash_status, version):
+            box.append(w)
+        view.set_content(box)
+        return view
+
+    def _probe_hardware(self):
+        """Roda fora da thread da interface: tudo que pode demorar (USB, subprocessos)."""
+        def step(msg):
+            GLib.idle_add(self.splash_status.set_label, msg)
+
+        step("Lendo sensores térmicos…")
+        thermal = Thermal()
+        thermal.fans(); thermal.temps(); thermal.profiles()
+        step("Conectando ao controlador de LEDs…")
+        elc_info = probe_elc()
+        step("Verificando o serviço em segundo plano…")
+        service_active()
+        step("Pronto")
+        GLib.idle_add(self._finish_loading, thermal, elc_info)
+
+    def _finish_loading(self, thermal, elc_info):
+        self.thermal = thermal
+        self._elc_info = elc_info
+        remaining = SPLASH_MIN_SECONDS - (time.monotonic() - self._loading_started)
+        GLib.timeout_add(max(0, int(remaining * 1000)), lambda: self._build_main() and False)
+        return False
+
+    def _build_main(self):
         self.toasts = Adw.ToastOverlay()
         toolbar = Adw.ToolbarView()
         header = Adw.HeaderBar()
@@ -227,7 +299,6 @@ class Window(Adw.ApplicationWindow):
 
         toolbar.set_content(self.stack)
         self.toasts.set_child(toolbar)
-        self.set_content(self.toasts)
 
         self.stack.add_titled_with_icon(self._build_thermal_page(), "thermal", "Térmico e Fans",
                                         "power-profile-performance-symbolic")
@@ -235,6 +306,8 @@ class Window(Adw.ApplicationWindow):
                                         "display-brightness-symbolic")
         self._check_permissions()
         self._refresh()
+        self.root.add_named(self.toasts, "main")
+        self.root.set_visible_child_name("main")
         GLib.timeout_add(1000, self._refresh)
         GLib.timeout_add_seconds(5, self._refresh_service)
         self._refresh_service()
@@ -551,30 +624,20 @@ class Window(Adw.ApplicationWindow):
                                                 description="Use “Identificar” para descobrir qual zona é qual e renomeie-a.")
         page.add(self.zones_group)
         self.zone_rows = []
-        self._detect_zones(force=False)
+        self._apply_elc_info(self._elc_info, force=False)
         return page
 
     def _detect_zones(self, force: bool):
+        self._apply_elc_info(probe_elc(), force)
+
+    def _apply_elc_info(self, info: dict, force: bool):
         lc = self.cfg["lighting"]
-        dev = find_device()
-        if not dev:
-            self.dev_row.set_subtitle("Não encontrado")
-        else:
-            try:
-                with ELC(dev) as elc:
-                    fw = elc.firmware()
-                    conf = elc.config()
-                if conf and 1 <= conf[1] <= 64:
-                    if force or "detected" not in lc:
-                        lc["zone_count"] = conf[1]
-                        lc["detected"] = True
-                        self.save()
-                    self.dev_row.set_subtitle(
-                        f"{dev} · firmware {fw or '?'} · plataforma 0x{conf[0]:04x} · {conf[1]} zonas")
-                else:
-                    self.dev_row.set_subtitle(f"{dev} · firmware {fw or '?'} · sem resposta de configuração")
-            except (LightingError, OSError) as e:
-                self.dev_row.set_subtitle(str(e))
+        self.dev_row.set_subtitle(info.get("summary", ""))
+        zones = info.get("zones")
+        if zones and (force or "detected" not in lc):
+            lc["zone_count"] = zones
+            lc["detected"] = True
+            self.save()
         self._build_zone_rows()
 
     def _build_zone_rows(self):
