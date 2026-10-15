@@ -6,6 +6,6 @@ Comment=Perfis térmicos, fans e iluminação RGB para notebooks Alienware
 Exec=nova-control
 Icon=io.github.nova_control
 Terminal=false
-Categories=Settings;HardwareSettings;System;
+Categories=Settings;HardwareSettings;
 Keywords=alienware;fan;rgb;led;thermal;gmode;
 StartupWMClass=io.github.nova_control

@@ -343,9 +343,12 @@ class Window(Adw.ApplicationWindow):
         d = Adw.AlertDialog(
             heading="Permissões de hardware",
             body=("O controle de fans, perfis e LEDs exige acesso a arquivos do kernel que, por padrão, "
-                  "só o root pode escrever.\n\nRode uma vez no terminal, dentro da pasta do projeto:\n\n"
-                  "sudo ./install/install.sh\n\nIsso instala regras udev que liberam o acesso para o grupo "
-                  "'plugdev' (do qual você já faz parte). Depois reabra o app."),
+                  "só o root pode escrever. O Nova Control libera esse acesso para o grupo 'plugdev'.\n\n"
+                  "1. Confirme que o pacote nova-control está instalado (ou rode sudo ./install/install.sh "
+                  "a partir do código).\n"
+                  "2. Coloque seu usuário no grupo, se ainda não estiver:\n\n"
+                  "sudo usermod -aG plugdev $USER\n\n"
+                  "3. Saia e entre de novo na sessão."),
         )
         d.add_response("ok", "OK")
         d.present(self)

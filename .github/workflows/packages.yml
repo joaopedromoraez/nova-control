@@ -1,0 +1,91 @@
+name: Packages
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install tools
+        run: |
+          echo 'deb [trusted=yes] https://repo.goreleaser.com/apt/ /' | sudo tee /etc/apt/sources.list.d/goreleaser.list
+          sudo apt-get update
+          sudo apt-get install -y nfpm desktop-file-utils appstream
+
+      - name: Read version
+        run: |
+          VERSION=$(sed -n 's/^__version__ = "\(.*\)"/\1/p' nova_control/__init__.py)
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+          if [ "${GITHUB_REF_TYPE}" = "tag" ] && [ "${GITHUB_REF_NAME}" != "v$VERSION" ]; then
+            echo "::error::Tag ${GITHUB_REF_NAME} não bate com __version__ = $VERSION"
+            exit 1
+          fi
+
+      - name: Validate
+        run: |
+          python3 -m py_compile nova_control/*.py
+          desktop-file-validate data/io.github.nova_control.desktop
+          appstreamcli validate --no-net data/io.github.nova_control.metainfo.xml
+
+      - name: Build packages
+        run: |
+          PREFIX=/usr DESTDIR=build/root packaging/install-files.sh
+          mkdir -p dist
+          for p in deb rpm archlinux; do
+            nfpm package -f packaging/nfpm.yaml -p "$p" -t dist/
+          done
+          ls -l dist
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nova-control-${{ env.VERSION }}
+          path: dist/*
+
+
+  test-deb:
+    needs: build
+    runs-on: ubuntu-24.04
+    container: ubuntu:26.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Install, run and remove the .deb
+        run: |
+          apt-get update
+          apt-get install -y ./dist/*.deb
+          nova-control --help
+          test -f /usr/lib/udev/rules.d/99-nova-control.rules
+          test -f /usr/share/metainfo/io.github.nova_control.metainfo.xml
+          test -f /usr/share/icons/hicolor/scalable/apps/io.github.nova_control.svg
+          python3 -c "import sys; sys.path.insert(0, '/usr/share/nova-control'); import nova_control.gui"
+          apt-get remove -y nova-control
+          ! command -v nova-control
+
+  release:
+    if: github.ref_type == 'tag'
+    needs: [build, test-deb]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Attach to release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1 \
+            || gh release create "$GITHUB_REF_NAME" --title "Nova Control $VERSION" --generate-notes
+          gh release upload "$GITHUB_REF_NAME" dist/* --clobber

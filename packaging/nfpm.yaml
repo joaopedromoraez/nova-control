@@ -1,0 +1,68 @@
+# Gera .deb, .rpm e .pkg.tar.zst a partir da árvore criada por packaging/install-files.sh
+#
+#   PREFIX=/usr DESTDIR=build/root packaging/install-files.sh
+#   VERSION=0.2.0 nfpm package -f packaging/nfpm.yaml -p deb -t dist/
+
+name: nova-control
+version: ${VERSION}
+version_schema: semver
+release: 1
+arch: all
+platform: linux
+section: utils
+priority: optional
+maintainer: João Pedro Moraes <joaopedromoraes@outlook.com>
+vendor: João Pedro Moraes
+homepage: https://github.com/joaopedromoraez/nova-control
+license: MIT
+description: |
+  Alienware Command Center (AWCC) alternative for Linux.
+  Fan control, custom fan curves, thermal profiles, G-Mode and AlienFX RGB
+  lighting for Alienware laptops, with a native GTK4/libadwaita interface.
+
+depends:
+  - python3 (>= 3.10)
+  - python3-gi
+  - gir1.2-gtk-4.0 (>= 4.14)
+  - gir1.2-adw-1 (>= 1.7)
+  - udev
+  - passwd
+
+overrides:
+  rpm:
+    depends:
+      - python3 >= 3.10
+      - python3-gobject
+      - gtk4 >= 4.14
+      - libadwaita >= 1.7
+      - systemd-udev
+      - shadow-utils
+  archlinux:
+    depends:
+      - python
+      - python-gobject
+      - gtk4>=4.14
+      - libadwaita>=1.7
+      - systemd
+      - shadow
+
+contents:
+  - src: build/root/
+    dst: /
+    type: tree
+
+scripts:
+  postinstall: packaging/scripts/postinstall.sh
+  preremove: packaging/scripts/preremove.sh
+  postremove: packaging/scripts/postremove.sh
+
+deb:
+  fields:
+    Bugs: https://github.com/joaopedromoraez/nova-control/issues
+
+rpm:
+  group: Applications/System
+  summary: Fan control, thermal profiles and RGB lighting for Alienware laptops
+
+archlinux:
+  packager: João Pedro Moraes <joaopedromoraes@outlook.com>

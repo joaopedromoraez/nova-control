@@ -1,71 +1,59 @@
 #!/bin/sh
-# Instala o Nova Control. Rode com: sudo ./install/install.sh
+# Instala o Nova Control a partir do código-fonte (em /usr/local).
+# Prefira os pacotes .deb/.rpm/Arch da página de Releases quando houver um para sua distro.
+#
+#   sudo ./install/install.sh               instala
+#   sudo ./install/install.sh --uninstall   remove
 set -eu
 
 if [ "$(id -u)" -ne 0 ]; then
-    echo "Rode com sudo: sudo $0" >&2
+    echo "Rode com sudo: sudo $0 $*" >&2
     exit 1
 fi
 
 SRC="$(cd "$(dirname "$0")/.." && pwd)"
-PREFIX=/opt/nova-control
-TARGET_USER="${SUDO_USER:-}"
+APP_ID=io.github.nova_control
+export PREFIX=/usr/local
 
-if [ -n "$TARGET_USER" ]; then
-    UID_T="$(id -u "$TARGET_USER")"
-    run_user() { sudo -u "$TARGET_USER" XDG_RUNTIME_DIR="/run/user/$UID_T" "$@"; }
+owned_by_package() {
+    { command -v dpkg >/dev/null 2>&1 && dpkg -S "$1" >/dev/null 2>&1; } ||
+    { command -v rpm >/dev/null 2>&1 && rpm -qf "$1" >/dev/null 2>&1; } ||
+    { command -v pacman >/dev/null 2>&1 && pacman -Qo "$1" >/dev/null 2>&1; }
+}
+
+if [ "${1:-}" = "--uninstall" ]; then
+    echo "==> Removendo Nova Control de $PREFIX"
+    systemctl --global disable nova-control.service >/dev/null 2>&1 || true
+    "$SRC/packaging/install-files.sh" --uninstall
+    sh "$SRC/packaging/scripts/postremove.sh"
+    echo "Removido."
+    exit 0
 fi
 
-# Remove a instalação antiga ("Alienware Control"), se existir
-if [ -e /opt/alienware-control ] || [ -e /usr/lib/systemd/user/alienware-control.service ]; then
-    echo "==> Removendo instalação antiga (alienware-control)"
-    if [ -n "$TARGET_USER" ] && [ -S "/run/user/$UID_T/bus" ]; then
-        run_user systemctl --user disable --now alienware-control.service 2>/dev/null || true
+# Arquivos que a versão 0.1 copiava direto para /usr/share e /usr/lib (sem pacote)
+for f in /usr/share/applications/$APP_ID.desktop \
+         /usr/share/applications/nova-control.desktop \
+         /usr/share/icons/hicolor/scalable/apps/$APP_ID.svg \
+         /usr/share/icons/hicolor/scalable/apps/$APP_ID-logo.svg \
+         /usr/share/icons/hicolor/symbolic/apps/$APP_ID-symbolic.svg \
+         /usr/lib/systemd/user/nova-control.service; do
+    if [ -e "$f" ] && ! owned_by_package "$f"; then
+        rm -f "$f"
     fi
-    rm -rf /opt/alienware-control
-    rm -f /usr/local/bin/alienware-control \
-          /etc/udev/rules.d/99-alienware-control.rules \
-          /usr/share/applications/alienware-control.desktop \
-          /usr/lib/systemd/user/alienware-control.service
-fi
+done
 
-echo "==> Copiando aplicativo para $PREFIX"
-rm -rf "$PREFIX"
-mkdir -p "$PREFIX"
-cp -r "$SRC/nova_control" "$SRC/bin" "$SRC/data" "$PREFIX/"
-find "$PREFIX" -name __pycache__ -prune -exec rm -rf {} +
-chmod 755 "$PREFIX/bin/nova-control"
-ln -sf "$PREFIX/bin/nova-control" /usr/local/bin/nova-control
+echo "==> Instalando arquivos em $PREFIX"
+"$SRC/packaging/install-files.sh"
 
-echo "==> Instalando regras udev"
-getent group plugdev >/dev/null || groupadd --system plugdev  # Fedora/Arch não têm por padrão
-install -m 644 "$SRC/install/99-nova-control.rules" /etc/udev/rules.d/99-nova-control.rules
-udevadm control --reload-rules
-udevadm trigger --subsystem-match=hidraw --action=add
-udevadm trigger --subsystem-match=hwmon --action=add
-udevadm trigger --subsystem-match=platform-profile --action=add
-udevadm settle
+echo "==> Configurando permissões, serviço e ícones"
+sh "$SRC/packaging/scripts/postinstall.sh"
 
-echo "==> Ícones, atalho no menu e serviço de usuário"
-ICONS=/usr/share/icons/hicolor
-install -Dm 644 "$SRC/data/icons/io.github.nova_control.svg" "$ICONS/scalable/apps/io.github.nova_control.svg"
-install -Dm 644 "$SRC/data/icons/io.github.nova_control-logo.svg" "$ICONS/scalable/apps/io.github.nova_control-logo.svg"
-install -Dm 644 "$SRC/data/icons/io.github.nova_control-symbolic.svg" "$ICONS/symbolic/apps/io.github.nova_control-symbolic.svg"
-gtk-update-icon-cache -q -t -f "$ICONS" 2>/dev/null || true
-rm -f /usr/share/applications/nova-control.desktop
-install -m 644 "$SRC/install/io.github.nova_control.desktop" /usr/share/applications/io.github.nova_control.desktop
-update-desktop-database -q /usr/share/applications 2>/dev/null || true
-install -m 644 "$SRC/install/nova-control.service" /usr/lib/systemd/user/nova-control.service
-
-if [ -n "$TARGET_USER" ]; then
-    if ! id -nG "$TARGET_USER" | grep -qw plugdev; then
-        usermod -aG plugdev "$TARGET_USER"
-        echo "   Usuário $TARGET_USER adicionado ao grupo plugdev (faça logout/login)."
-    fi
+# Inicia o serviço agora para quem instalou (o postinstall só o ativa para os próximos logins)
+if [ -n "${SUDO_USER:-}" ]; then
+    UID_T="$(id -u "$SUDO_USER")"
     if [ -S "/run/user/$UID_T/bus" ]; then
-        run_user systemctl --user daemon-reload || true
-        run_user systemctl --user enable nova-control.service || true
-        run_user systemctl --user restart nova-control.service || true
+        sudo -u "$SUDO_USER" XDG_RUNTIME_DIR="/run/user/$UID_T" systemctl --user daemon-reload || true
+        sudo -u "$SUDO_USER" XDG_RUNTIME_DIR="/run/user/$UID_T" systemctl --user restart nova-control.service || true
     fi
 fi
 

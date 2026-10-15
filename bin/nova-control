@@ -3,7 +3,14 @@ import os
 import sys
 
 HERE = os.path.dirname(os.path.realpath(__file__))
-sys.path.insert(0, os.environ.get("NOVA_LIBDIR", os.path.dirname(HERE)))
+for libdir in (
+    os.environ.get("NOVA_LIBDIR"),
+    os.path.dirname(HERE),                                       # repositório (desenvolvimento)
+    os.path.join(os.path.dirname(HERE), "share", "nova-control"),  # instalado: <prefix>/share/nova-control
+):
+    if libdir and os.path.isdir(os.path.join(libdir, "nova_control")):
+        sys.path.insert(0, libdir)
+        break
 
 from nova_control.cli import main  # noqa: E402
 

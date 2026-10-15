@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.nova_control</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+
+  <name>Nova Control</name>
+  <summary>Fan control, thermal profiles and RGB lighting for Alienware laptops</summary>
+  <summary xml:lang="pt_BR">Fans, perfis térmicos e iluminação RGB para notebooks Alienware</summary>
+
+  <developer id="io.github.joaopedromoraez">
+    <name>João Pedro Moraes</name>
+  </developer>
+
+  <description>
+    <p>
+      Nova Control is an Alienware Command Center (AWCC) alternative for Linux.
+      It controls fans, thermal profiles, G-Mode and AlienFX RGB lighting on
+      Alienware gaming laptops, without root after installation.
+    </p>
+    <p xml:lang="pt_BR">
+      O Nova Control é uma alternativa ao Alienware Command Center (AWCC) para Linux.
+      Ele controla fans, perfis térmicos, G-Mode e a iluminação RGB AlienFX de
+      notebooks gamer Alienware, sem precisar de root depois de instalado.
+    </p>
+    <p>Features:</p>
+    <p xml:lang="pt_BR">Recursos:</p>
+    <ul>
+      <li>Live CPU and GPU temperature and fan speed monitoring</li>
+      <li xml:lang="pt_BR">Monitoramento em tempo real de temperatura e rotação das fans</li>
+      <li>Firmware thermal profiles, including Performance with G-Mode</li>
+      <li xml:lang="pt_BR">Perfis térmicos do firmware, incluindo Desempenho com G-Mode</li>
+      <li>Automatic, fixed boost or custom fan curve control</li>
+      <li xml:lang="pt_BR">Fans em modo automático, boost fixo ou curva personalizada</li>
+      <li>RGB lighting effects with per-zone colors and brightness</li>
+      <li xml:lang="pt_BR">Efeitos de iluminação RGB com cores e brilho por zona</li>
+      <li>Background service that keeps your settings after login and suspend</li>
+      <li xml:lang="pt_BR">Serviço em segundo plano que mantém suas configurações após login e suspensão</li>
+    </ul>
+  </description>
+
+  <launchable type="desktop-id">io.github.nova_control.desktop</launchable>
+  <provides>
+    <binary>nova-control</binary>
+    <modalias>usb:v187Cp0550*</modalias>
+    <modalias>usb:v187Cp0551*</modalias>
+  </provides>
+
+  <url type="homepage">https://github.com/joaopedromoraez/nova-control</url>
+  <url type="bugtracker">https://github.com/joaopedromoraez/nova-control/issues</url>
+  <url type="vcs-browser">https://github.com/joaopedromoraez/nova-control</url>
+
+  <screenshots>
+    <screenshot type="default">
+      <caption>Thermal profiles and custom fan curve</caption>
+      <image>https://raw.githubusercontent.com/joaopedromoraez/nova-control/main/docs/screenshot-curve.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>RGB lighting per zone</caption>
+      <image>https://raw.githubusercontent.com/joaopedromoraez/nova-control/main/docs/screenshot-lighting.png</image>
+    </screenshot>
+  </screenshots>
+
+  <categories>
+    <category>Settings</category>
+    <category>HardwareSettings</category>
+  </categories>
+  <keywords>
+    <keyword>Alienware</keyword>
+    <keyword>AWCC</keyword>
+    <keyword>AlienFX</keyword>
+    <keyword>fan</keyword>
+    <keyword>RGB</keyword>
+    <keyword>G-Mode</keyword>
+  </keywords>
+
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+    <control>touch</control>
+  </supports>
+  <requires>
+    <display_length compare="ge">360</display_length>
+  </requires>
+
+  <content_rating type="oars-1.1"/>
+
+  <releases>
+    <release version="0.2.0" date="2026-10-15">
+      <description>
+        <ul>
+          <li>Native .deb, .rpm and Arch Linux packages</li>
+          <li>Loading screen while hardware is detected</li>
+          <li>GitHub links in the About dialog</li>
+        </ul>
+      </description>
+    </release>
+    <release version="0.1.0" date="2026-10-15">
+      <description>
+        <p>First public release.</p>
+      </description>
+    </release>
+  </releases>
+</component>
