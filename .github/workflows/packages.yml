@@ -69,7 +69,8 @@ jobs:
           test -f /usr/share/icons/hicolor/scalable/apps/io.github.nova_control.svg
           python3 -c "import sys; sys.path.insert(0, '/usr/share/nova-control'); import nova_control.gui"
           apt-get remove -y nova-control
-          ! command -v nova-control
+          test ! -e /usr/bin/nova-control
+          test ! -e /usr/share/nova-control
 
   release:
     if: github.ref_type == 'tag'
