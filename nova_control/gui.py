@@ -19,6 +19,8 @@ from .lighting import ELC, EFFECTS, LightingError, apply_lighting_config, find_d
 from .thermal import PROFILE_LABELS, Thermal, ThermalError  # noqa: E402
 
 SERVICE = "nova-control.service"
+GITHUB_URL = "https://github.com/joaopedromoraez"
+REPO_URL = GITHUB_URL + "/nova-control"
 ICONS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "icons")
 LOGO_ICON = APP_ID + "-logo"
 TWO_COLOR_EFFECTS = {"morph"}
@@ -356,7 +358,13 @@ class Window(Adw.ApplicationWindow):
             developer_name="João Pedro Moraes",
             license_type=Gtk.License.MIT_X11,
             application_icon=LOGO_ICON,
+            website=REPO_URL,
+            issue_url=REPO_URL + "/issues",
+            developers=[f"João Pedro Moraes {GITHUB_URL}"],
+            copyright="© 2026 João Pedro Moraes",
         )
+        about.add_link("Repositório no GitHub", REPO_URL)
+        about.add_link("GitHub do autor", GITHUB_URL)
         about.present(self)
 
     # ---- página térmica ---------------------------------------------------
