@@ -103,6 +103,14 @@
   <content_rating type="oars-1.1"/>
 
   <releases>
+    <release version="0.3.0" date="2026-10-15">
+      <description>
+        <ul>
+          <li>Choose the interface language in Preferences: automatic, English, Brazilian Portuguese or Spanish</li>
+          <li>Main menu with Preferences and About, following the GNOME design guidelines</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.2.1" date="2026-10-15">
       <description>
         <ul>

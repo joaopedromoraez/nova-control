@@ -101,99 +101,107 @@ msgstr "aplica a configuração salva uma vez"
 msgid "Error: {error}"
 msgstr "Erro: {error}"
 
-#: nova_control/config.py:95
+#: nova_control/config.py:97
 #, python-brace-format
 msgid "Zone {number}"
 msgstr "Zona {number}"
 
-#: nova_control/gui.py:60
+#: nova_control/gui.py:61
 msgid "Not found"
 msgstr "Não encontrado"
 
-#: nova_control/gui.py:68
+#: nova_control/gui.py:69
 #, python-brace-format
 msgid "{count} zone"
 msgid_plural "{count} zones"
 msgstr[0] "{count} zona"
 msgstr[1] "{count} zonas"
 
-#: nova_control/gui.py:70
+#: nova_control/gui.py:71
 #, python-brace-format
 msgid "{device} · firmware {firmware} · platform 0x{platform:04x} · {zones}"
 msgstr "{device} · firmware {firmware} · plataforma 0x{platform:04x} · {zones}"
 
-#: nova_control/gui.py:72
+#: nova_control/gui.py:73
 #, python-brace-format
 msgid "{device} · firmware {firmware} · no configuration response"
 msgstr "{device} · firmware {firmware} · sem resposta de configuração"
 
-#: nova_control/gui.py:259
+#: nova_control/gui.py:260
 msgid "Starting…"
 msgstr "Iniciando…"
 
-#: nova_control/gui.py:260
+#: nova_control/gui.py:261
 #, python-brace-format
 msgid "version {version}"
 msgstr "versão {version}"
 
-#: nova_control/gui.py:271
+#: nova_control/gui.py:272
 msgid "Reading thermal sensors…"
 msgstr "Lendo sensores térmicos…"
 
-#: nova_control/gui.py:274
+#: nova_control/gui.py:275
 msgid "Connecting to the LED controller…"
 msgstr "Conectando ao controlador de LEDs…"
 
-#: nova_control/gui.py:276
+#: nova_control/gui.py:277
 msgid "Checking the background service…"
 msgstr "Verificando o serviço em segundo plano…"
 
-#: nova_control/gui.py:278
+#: nova_control/gui.py:279
 msgid "Ready"
 msgstr "Pronto"
 
-#: nova_control/gui.py:297
-msgid "About"
-msgstr "Sobre"
+#: nova_control/gui.py:299 nova_control/gui.py:385
+msgid "Preferences"
+msgstr "Preferências"
+
+#: nova_control/gui.py:300
+msgid "About Nova Control"
+msgstr "Sobre o Nova Control"
 
 #: nova_control/gui.py:302
+msgid "Main menu"
+msgstr "Menu principal"
+
+#: nova_control/gui.py:309
 msgid "How to fix"
 msgstr "Como corrigir"
 
-#: nova_control/gui.py:309
+#: nova_control/gui.py:316
 msgid "Thermal and fans"
 msgstr "Térmico e Fans"
 
-#: nova_control/gui.py:311
+#: nova_control/gui.py:318
 msgid "Lighting"
 msgstr "Iluminação"
 
-#: nova_control/gui.py:331
+#: nova_control/gui.py:338
 msgid "alienware_wmi driver not loaded"
 msgstr "driver alienware_wmi não carregado"
 
-#: nova_control/gui.py:333
+#: nova_control/gui.py:340
 msgid "no permission for fans and profiles"
 msgstr "sem permissão para fans e perfis"
 
-#: nova_control/gui.py:336
+#: nova_control/gui.py:343
 msgid "LED controller not found"
 msgstr "controlador de LED não encontrado"
 
-#: nova_control/gui.py:339
+#: nova_control/gui.py:346
 msgid "no permission for the LED controller"
 msgstr "sem permissão para o controlador de LED"
 
-#: nova_control/gui.py:341
+#: nova_control/gui.py:348
 #, python-brace-format
 msgid "Limited access: {problems}"
 msgstr "Acesso limitado: {problems}"
 
-#: nova_control/gui.py:348
+#: nova_control/gui.py:355
 msgid "Hardware permissions"
 msgstr "Permissões de hardware"
 
-#: nova_control/gui.py:349
+#: nova_control/gui.py:356
 msgid ""
 "Controlling fans, profiles and LEDs requires access to kernel files that, by default, only root can write. Nova Control grants that access to the 'plugdev' group.\n"
 "\n"
@@ -213,199 +221,224 @@ msgstr ""
 "\n"
 "3. Saia e entre de novo na sessão."
 
-#: nova_control/gui.py:357
+#: nova_control/gui.py:364
 msgid "OK"
 msgstr "OK"
 
-#: nova_control/gui.py:364
+#: nova_control/gui.py:371
 msgid "Fan control, thermal profiles and RGB lighting for Alienware laptops on Linux."
 msgstr "Controle de fans, perfis térmicos e iluminação RGB para notebooks Alienware no Linux."
 
-#: nova_control/gui.py:373
+#: nova_control/gui.py:380
 msgid "GitHub repository"
 msgstr "Repositório no GitHub"
 
-#: nova_control/gui.py:374
+#: nova_control/gui.py:381
 msgid "Author on GitHub"
 msgstr "GitHub do autor"
 
-#: nova_control/gui.py:382
-msgid "Monitor"
-msgstr "Monitor"
+#: nova_control/gui.py:386 nova_control/gui.py:648
+msgid "General"
+msgstr "Geral"
 
-#: nova_control/gui.py:406
-msgid "alienware_wmi driver not found."
-msgstr "Driver alienware_wmi não encontrado."
+#: nova_control/gui.py:387
+msgid "Language"
+msgstr "Idioma"
 
-#: nova_control/gui.py:412
-msgid "Thermal profile"
-msgstr "Perfil térmico"
+#: nova_control/gui.py:388
+msgid "Nova Control restarts to apply a new language."
+msgstr "O Nova Control reinicia para aplicar um novo idioma."
 
-#: nova_control/gui.py:413
-msgid "“Performance” enables G-Mode. GNOME's power mode switch also changes this profile."
-msgstr "“Desempenho” ativa o G-Mode. O seletor de modo de energia do GNOME também altera este perfil."
-
-#: nova_control/gui.py:428
-msgid "Fan control"
-msgstr "Controle das fans"
-
-#: nova_control/gui.py:430
+#: nova_control/gui.py:392 nova_control/gui.py:474
 msgid "Automatic"
 msgstr "Automático"
 
-#: nova_control/gui.py:430
+#: nova_control/gui.py:393
+msgid "Interface language"
+msgstr "Idioma da interface"
+
+#: nova_control/gui.py:394
+#, python-brace-format
+msgid "Automatic follows the system: {language}"
+msgstr "O automático segue o sistema: {language}"
+
+#: nova_control/gui.py:405
+msgid "Restart to apply the language"
+msgstr "Reinicie para aplicar o idioma"
+
+#: nova_control/gui.py:406
+msgid "Restart"
+msgstr "Reiniciar"
+
+#: nova_control/gui.py:426
+msgid "Monitor"
+msgstr "Monitor"
+
+#: nova_control/gui.py:450
+msgid "alienware_wmi driver not found."
+msgstr "Driver alienware_wmi não encontrado."
+
+#: nova_control/gui.py:456
+msgid "Thermal profile"
+msgstr "Perfil térmico"
+
+#: nova_control/gui.py:457
+msgid "“Performance” enables G-Mode. GNOME's power mode switch also changes this profile."
+msgstr "“Desempenho” ativa o G-Mode. O seletor de modo de energia do GNOME também altera este perfil."
+
+#: nova_control/gui.py:472
+msgid "Fan control"
+msgstr "Controle das fans"
+
+#: nova_control/gui.py:474
 msgid "Fixed boost"
 msgstr "Boost fixo"
 
-#: nova_control/gui.py:430
+#: nova_control/gui.py:474
 msgid "Custom curve"
 msgstr "Curva personalizada"
 
-#: nova_control/gui.py:441
+#: nova_control/gui.py:485
 msgid "The firmware controls the fans according to the selected thermal profile."
 msgstr "O firmware controla as fans de acordo com o perfil térmico selecionado."
 
-#: nova_control/gui.py:448
+#: nova_control/gui.py:492
 msgid "Boost above the base speed"
 msgstr "Boost acima da rotação base"
 
-#: nova_control/gui.py:462
+#: nova_control/gui.py:506
 msgid "Background service"
 msgstr "Serviço em segundo plano"
 
-#: nova_control/gui.py:463
+#: nova_control/gui.py:507
 msgid "Required for the curve to work with the app closed"
 msgstr "Necessário para a curva funcionar com o app fechado"
 
-#: nova_control/gui.py:474
+#: nova_control/gui.py:518
 #, python-brace-format
 msgid "{fan} — drag the points"
 msgstr "{fan} — arraste os pontos"
 
-#: nova_control/gui.py:476
+#: nova_control/gui.py:520
 msgid "Default"
 msgstr "Padrão"
 
-#: nova_control/gui.py:529
+#: nova_control/gui.py:573
 msgid "Turn on the background service for the curve to work"
 msgstr "Ative o serviço em segundo plano para a curva funcionar"
 
-#: nova_control/gui.py:551
+#: nova_control/gui.py:595
 #, python-brace-format
 msgid "Failed: {error}"
 msgstr "Falha: {error}"
 
-#: nova_control/gui.py:551
+#: nova_control/gui.py:595
 msgid "service not installed"
 msgstr "serviço não instalado"
 
-#: nova_control/gui.py:561
+#: nova_control/gui.py:605
 msgid "Active — applying settings and curve"
 msgstr "Ativo — aplicando configurações e curva"
 
-#: nova_control/gui.py:562
+#: nova_control/gui.py:606
 msgid "Inactive — the curve will not be applied"
 msgstr "Inativo — a curva não será aplicada"
 
-#: nova_control/gui.py:577
+#: nova_control/gui.py:621
 #, python-brace-format
 msgid "{rpm} RPM  ·  max {max}"
 msgstr "{rpm} RPM  ·  máx {max}"
 
-#: nova_control/gui.py:579
+#: nova_control/gui.py:623
 #, python-brace-format
 msgid "Boost: {percent}%"
 msgstr "Boost: {percent}%"
 
-#: nova_control/gui.py:596
+#: nova_control/gui.py:640
 msgid "Controller"
 msgstr "Controlador"
 
-#: nova_control/gui.py:597
+#: nova_control/gui.py:641
 msgid "Searching…"
 msgstr "Procurando…"
 
-#: nova_control/gui.py:598
+#: nova_control/gui.py:642
 msgid "Detect zones"
 msgstr "Detectar zonas"
 
-#: nova_control/gui.py:604
-msgid "General"
-msgstr "Geral"
-
-#: nova_control/gui.py:605
+#: nova_control/gui.py:649
 msgid "Apply lighting at login"
 msgstr "Aplicar iluminação ao iniciar sessão"
 
-#: nova_control/gui.py:609
+#: nova_control/gui.py:653
 msgid "Brightness"
 msgstr "Brilho"
 
-#: nova_control/gui.py:620
+#: nova_control/gui.py:664
 msgid "Same effect on all zones"
 msgstr "Mesmo efeito em todas as zonas"
 
-#: nova_control/gui.py:621
+#: nova_control/gui.py:665
 msgid "Changes to the first zone are copied to the others"
 msgstr "Alterações na primeira zona são copiadas para as demais"
 
-#: nova_control/gui.py:627
+#: nova_control/gui.py:671
 msgid "Alien"
 msgstr "Alien"
 
-#: nova_control/gui.py:627
+#: nova_control/gui.py:671
 msgid "Red"
 msgstr "Vermelho"
 
-#: nova_control/gui.py:627
+#: nova_control/gui.py:671
 msgid "Green"
 msgstr "Verde"
 
-#: nova_control/gui.py:628
+#: nova_control/gui.py:672
 msgid "Purple"
 msgstr "Roxo"
 
-#: nova_control/gui.py:628
+#: nova_control/gui.py:672
 msgid "White"
 msgstr "Branco"
 
-#: nova_control/gui.py:632
+#: nova_control/gui.py:676
 msgid "Rainbow"
 msgstr "Arco-íris"
 
-#: nova_control/gui.py:639
+#: nova_control/gui.py:683
 msgid "Zones"
 msgstr "Zonas"
 
-#: nova_control/gui.py:639
+#: nova_control/gui.py:683
 msgid "Use “Identify” to find out which zone is which, then rename it."
 msgstr "Use “Identificar” para descobrir qual zona é qual e renomeie-a."
 
-#: nova_control/gui.py:671
+#: nova_control/gui.py:715
 msgid "Name"
 msgstr "Nome"
 
-#: nova_control/gui.py:676
+#: nova_control/gui.py:720
 msgid "Effect"
 msgstr "Efeito"
 
-#: nova_control/gui.py:680
+#: nova_control/gui.py:724
 msgid "Colors"
 msgstr "Cores"
 
-#: nova_control/gui.py:688
+#: nova_control/gui.py:732
 msgid "Speed"
 msgstr "Velocidade"
 
-#: nova_control/gui.py:695
+#: nova_control/gui.py:739
 msgid "Identify zone"
 msgstr "Identificar zona"
 
-#: nova_control/gui.py:695
+#: nova_control/gui.py:739
 msgid "Flashes only this zone in white for 3 s"
 msgstr "Pisca só esta zona em branco por 3 s"
 
-#: nova_control/gui.py:696
+#: nova_control/gui.py:740
 msgid "Identify"
 msgstr "Identificar"
 

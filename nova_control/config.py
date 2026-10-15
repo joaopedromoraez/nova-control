@@ -13,6 +13,8 @@ CONFIG_PATH = os.path.join(CONFIG_DIR, "config.json")
 DEFAULT_CURVE = [[40, 0], [55, 15], [70, 45], [80, 75], [90, 100]]
 
 DEFAULTS = {
+    # "auto" segue o idioma do sistema; ou "en", "pt_BR", "es"…
+    "language": "auto",
     "thermal": {
         "profile": "balanced",
         # auto   = firmware decide (boost 0)

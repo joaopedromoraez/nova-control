@@ -49,7 +49,7 @@ Dell ships the **Alienware Command Center** only for Windows. On Linux there is 
 - A full **command-line interface** for scripts and keyboard shortcuts
 
 ### 🌍 Multilingual
-- Interface in **English**, **Brazilian Portuguese** and **Spanish**, chosen automatically from your system language
+- Interface in **English**, **Brazilian Portuguese** and **Spanish**, chosen automatically from your system language or set in **Preferences**
 
 ## Compatibility
 
@@ -157,7 +157,7 @@ nova-control/
 
 ## Languages
 
-Nova Control follows your system language (`LANGUAGE`, `LC_ALL`, `LC_MESSAGES` or `LANG`) and falls back to English:
+By default Nova Control follows your system language (`LANGUAGE`, `LC_ALL`, `LC_MESSAGES` or `LANG`) and falls back to English. To pick another one, open the main menu (☰) → **Preferences** (<kbd>Ctrl</kbd>+<kbd>,</kbd>) → **Interface language**. The choice also applies to the command line.
 
 | Language | File |
 |---|---|
@@ -165,7 +165,7 @@ Nova Control follows your system language (`LANGUAGE`, `LC_ALL`, `LC_MESSAGES` o
 | Português (Brasil) | [`po/pt_BR.po`](po/pt_BR.po) |
 | Español | [`po/es.po`](po/es.po) |
 
-To try another language without changing your system: `LANGUAGE=es nova-control`.
+With the language set to **Automatic**, you can also try another one for a single run: `LANGUAGE=es nova-control`.
 
 ### Contributing a translation
 

@@ -4,7 +4,8 @@ O texto original do código é inglês. As traduções ficam em po/<idioma>.po e
 diretamente em tempo de execução (sem compilar para .mo), então o app funciona igual
 rodando do repositório ou instalado, sem depender das ferramentas do gettext.
 
-O idioma vem do sistema, na ordem do gettext: LANGUAGE, LC_ALL, LC_MESSAGES, LANG.
+O idioma escolhido nas Preferências ("language" na configuração) tem prioridade.
+Em "auto", vale o idioma do sistema, na ordem do gettext: LANGUAGE, LC_ALL, LC_MESSAGES, LANG.
 Ex.: LANGUAGE=es nova-control
 """
 
@@ -15,6 +16,17 @@ import gettext
 import os
 
 PO_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "po")
+
+SOURCE_LANGUAGE = "en"
+_ORIGINAL_LANGUAGE_ENV = os.environ.get("LANGUAGE")
+
+# Nome de cada idioma escrito nele mesmo (não é traduzido: quem caiu num idioma
+# que não entende precisa reconhecer o próprio)
+LANGUAGE_NAMES = {
+    "en": "English",
+    "pt_BR": "Português (Brasil)",
+    "es": "Español",
+}
 
 # Regras de plural (iguais às do cabeçalho Plural-Forms de cada .po)
 PLURAL_RULES = {
@@ -117,17 +129,45 @@ class POTranslations(gettext.NullTranslations):
         return singular if n == 1 else plural
 
 
-def _load() -> gettext.NullTranslations:
-    lang = choose_language(system_languages(), available_languages())
-    if lang:
+def system_language() -> str:
+    """Idioma que o modo automático usa: código de um .po disponível ou "en"."""
+    return choose_language(system_languages(), available_languages()) or SOURCE_LANGUAGE
+
+
+def configured_language() -> str:
+    """Preferência salva: "auto", "en" ou o código de um .po disponível."""
+    from . import config
+    pref = config.load().get("language", "auto")
+    return pref if pref in ("auto", SOURCE_LANGUAGE, *available_languages()) else "auto"
+
+
+def language_choices() -> list[str]:
+    return [SOURCE_LANGUAGE, *available_languages()]
+
+
+def _load() -> tuple[str, gettext.NullTranslations]:
+    pref = configured_language()
+    lang = system_language() if pref == "auto" else pref
+    if pref != "auto":
+        # textos do próprio GTK/libadwaita (janela "Sobre", diálogos) seguem a escolha também
+        os.environ["LANGUAGE"] = lang
+    if lang != SOURCE_LANGUAGE:
         try:
-            return POTranslations(lang, parse_po(os.path.join(PO_DIR, f"{lang}.po")))
+            return lang, POTranslations(lang, parse_po(os.path.join(PO_DIR, f"{lang}.po")))
         except (OSError, ValueError, SyntaxError):
             pass
-    return gettext.NullTranslations()
+    return SOURCE_LANGUAGE, gettext.NullTranslations()
 
 
-translations = _load()
+def restore_environment() -> None:
+    """Desfaz o LANGUAGE definido por _load(), para um reinício voltar a ver o idioma real do sistema."""
+    if _ORIGINAL_LANGUAGE_ENV is None:
+        os.environ.pop("LANGUAGE", None)
+    else:
+        os.environ["LANGUAGE"] = _ORIGINAL_LANGUAGE_ENV
+
+
+active_language, translations = _load()
 _ = translations.gettext
 ngettext = translations.ngettext
 

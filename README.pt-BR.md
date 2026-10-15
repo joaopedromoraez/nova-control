@@ -46,7 +46,7 @@ Uma alternativa nativa ao Alienware Command Center, feita para o GNOME.
 - **Linha de comando** completa para scripts e atalhos
 
 ### 🌍 Vários idiomas
-- Interface em **inglês**, **português do Brasil** e **espanhol**, escolhida automaticamente pelo idioma do sistema
+- Interface em **inglês**, **português do Brasil** e **espanhol**, escolhida automaticamente pelo idioma do sistema ou nas **Preferências**
 
 ## Compatibilidade
 
@@ -154,7 +154,7 @@ nova-control/
 
 ## Idiomas
 
-O Nova Control segue o idioma do sistema (`LANGUAGE`, `LC_ALL`, `LC_MESSAGES` ou `LANG`) e usa o inglês quando não há tradução:
+Por padrão, o Nova Control segue o idioma do sistema (`LANGUAGE`, `LC_ALL`, `LC_MESSAGES` ou `LANG`) e usa o inglês quando não há tradução. Para escolher outro, abra o menu principal (☰) → **Preferências** (<kbd>Ctrl</kbd>+<kbd>,</kbd>) → **Idioma da interface**. A escolha vale também para a linha de comando.
 
 | Idioma | Arquivo |
 |---|---|
@@ -162,7 +162,7 @@ O Nova Control segue o idioma do sistema (`LANGUAGE`, `LC_ALL`, `LC_MESSAGES` ou
 | Português (Brasil) | [`po/pt_BR.po`](po/pt_BR.po) |
 | Español | [`po/es.po`](po/es.po) |
 
-Para testar outro idioma sem mudar o sistema: `LANGUAGE=es nova-control`.
+Com o idioma em **Automático**, dá para testar outro só numa execução: `LANGUAGE=es nova-control`.
 
 ### Contribuindo com uma tradução
 

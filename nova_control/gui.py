@@ -12,9 +12,10 @@ import gi
 
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
-from gi.repository import Adw, Gdk, GLib, Graphene, Gsk, Gtk, Pango  # noqa: E402
+from gi.repository import Adw, Gdk, Gio, GLib, Graphene, Gsk, Gtk, Pango  # noqa: E402
 
 from . import APP_ID, __version__, config  # noqa: E402
+from . import i18n  # noqa: E402
 from .i18n import _, ngettext  # noqa: E402
 from .lighting import ELC, EFFECTS, LightingError, apply_lighting_config, find_device  # noqa: E402
 from .thermal import PROFILE_LABELS, Thermal, ThermalError  # noqa: E402
@@ -294,9 +295,15 @@ class Window(Adw.ApplicationWindow):
         header.set_title_widget(switcher)
         header.pack_start(Gtk.Image(icon_name=LOGO_ICON, pixel_size=24, margin_start=4,
                                     tooltip_text="Nova Control"))
-        about_btn = Gtk.Button(icon_name="help-about-symbolic", tooltip_text=_("About"))
-        about_btn.connect("clicked", self._about)
-        header.pack_end(about_btn)
+        menu = Gio.Menu()
+        menu.append(_("Preferences"), "win.preferences")
+        menu.append(_("About Nova Control"), "win.about")
+        header.pack_end(Gtk.MenuButton(icon_name="open-menu-symbolic", menu_model=menu,
+                                       primary=True, tooltip_text=_("Main menu")))
+        for name, handler in (("preferences", self._preferences), ("about", self._about)):
+            action = Gio.SimpleAction.new(name, None)
+            action.connect("activate", handler)
+            self.add_action(action)
         toolbar.add_top_bar(header)
 
         self.banner = Adw.Banner(button_label=_("How to fix"))
@@ -373,6 +380,44 @@ class Window(Adw.ApplicationWindow):
         about.add_link(_("GitHub repository"), REPO_URL)
         about.add_link(_("Author on GitHub"), GITHUB_URL)
         about.present(self)
+
+    def _preferences(self, *_args):
+        dialog = Adw.PreferencesDialog(title=_("Preferences"), content_width=560, content_height=340)
+        page = Adw.PreferencesPage(title=_("General"), icon_name="preferences-system-symbolic")
+        group = Adw.PreferencesGroup(title=_("Language"),
+                                     description=_("Nova Control restarts to apply a new language."))
+
+        codes = ["auto", *i18n.language_choices()]
+        auto_name = i18n.LANGUAGE_NAMES.get(i18n.system_language(), i18n.system_language())
+        labels = [_("Automatic"), *(i18n.LANGUAGE_NAMES.get(c, c) for c in codes[1:])]
+        row = Adw.ComboRow(title=_("Interface language"), model=Gtk.StringList.new(labels),
+                           subtitle=_("Automatic follows the system: {language}").format(language=auto_name))
+        current = self.cfg.get("language", "auto")
+        row.set_selected(codes.index(current) if current in codes else 0)
+
+        def changed(combo, _pspec):
+            choice = codes[combo.get_selected()]
+            self.cfg["language"] = choice
+            self.save()
+            effective = i18n.system_language() if choice == "auto" else choice
+            if effective == i18n.active_language:
+                return
+            toast = Adw.Toast(title=_("Restart to apply the language"),
+                              button_label=_("Restart"), timeout=0)
+            toast.connect("button-clicked", self._restart)
+            dialog.add_toast(toast)
+
+        row.connect("notify::selected", changed)
+        group.add(row)
+        page.add(group)
+        dialog.add(page)
+        dialog.present(self)
+
+    def _restart(self, *_args):
+        """Reabre o app no mesmo processo (o novo idioma é carregado na inicialização)."""
+        self.save()
+        i18n.restore_environment()
+        os.execv(sys.executable, [sys.executable, *sys.argv])
 
     # ---- página térmica ---------------------------------------------------
     def _build_thermal_page(self):
@@ -831,6 +876,7 @@ class App(Adw.Application):
         Gtk.StyleContext.add_provider_for_display(Gdk.Display.get_default(), prov,
                                                   Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
         Adw.StyleManager.get_default().set_color_scheme(Adw.ColorScheme.PREFER_DARK)
+        self.set_accels_for_action("win.preferences", ["<Control>comma"])
         win = self.props.active_window or Window(app)
         win.present()
 
