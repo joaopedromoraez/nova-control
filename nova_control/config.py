@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import copy
+import re
 import json
 import os
 
@@ -76,9 +77,19 @@ def mtime() -> float:
 
 def zone_cfg(cfg: dict, zone: int) -> dict:
     zones = cfg["lighting"].setdefault("zones", {})
-    return zones.setdefault(str(zone), {
-        "name": f"Zona {zone + 1}",
+    zc = zones.setdefault(str(zone), {
+        "name": "",
         "effect": "static",
         "colors": [[0, 128, 255], [255, 0, 128]],
         "speed": 50,
     })
+    # nomes padrão gravados por versões antigas ("Zona 3") viram "sem nome" para seguir o idioma
+    if re.fullmatch(r"Zona \d+", zc.get("name", "")):
+        zc["name"] = ""
+    return zc
+
+
+def zone_name(cfg: dict, zone: int) -> str:
+    """Nome dado pelo usuário ou o nome padrão traduzido ("Zone 1", "Zona 1"…)."""
+    from .i18n import _
+    return zone_cfg(cfg, zone).get("name") or _("Zone {number}").format(number=zone + 1)

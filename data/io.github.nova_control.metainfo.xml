@@ -7,6 +7,7 @@
   <name>Nova Control</name>
   <summary>Fan control, thermal profiles and RGB lighting for Alienware laptops</summary>
   <summary xml:lang="pt_BR">Fans, perfis térmicos e iluminação RGB para notebooks Alienware</summary>
+  <summary xml:lang="es">Ventiladores, perfiles térmicos e iluminación RGB para portátiles Alienware</summary>
 
   <developer id="io.github.joaopedromoraez">
     <name>João Pedro Moraes</name>
@@ -23,19 +24,33 @@
       Ele controla fans, perfis térmicos, G-Mode e a iluminação RGB AlienFX de
       notebooks gamer Alienware, sem precisar de root depois de instalado.
     </p>
+    <p xml:lang="es">
+      Nova Control es una alternativa a Alienware Command Center (AWCC) para Linux.
+      Controla los ventiladores, los perfiles térmicos, el G-Mode y la iluminación RGB
+      AlienFX de los portátiles gamer Alienware, sin root después de instalarlo.
+    </p>
+    <p>Available in English, Brazilian Portuguese and Spanish.</p>
+    <p xml:lang="pt_BR">Disponível em inglês, português do Brasil e espanhol.</p>
+    <p xml:lang="es">Disponible en inglés, portugués de Brasil y español.</p>
     <p>Features:</p>
     <p xml:lang="pt_BR">Recursos:</p>
+    <p xml:lang="es">Funciones:</p>
     <ul>
       <li>Live CPU and GPU temperature and fan speed monitoring</li>
       <li xml:lang="pt_BR">Monitoramento em tempo real de temperatura e rotação das fans</li>
+      <li xml:lang="es">Monitoreo en tiempo real de la temperatura y la velocidad de los ventiladores</li>
       <li>Firmware thermal profiles, including Performance with G-Mode</li>
       <li xml:lang="pt_BR">Perfis térmicos do firmware, incluindo Desempenho com G-Mode</li>
+      <li xml:lang="es">Perfiles térmicos del firmware, incluido Rendimiento con G-Mode</li>
       <li>Automatic, fixed boost or custom fan curve control</li>
       <li xml:lang="pt_BR">Fans em modo automático, boost fixo ou curva personalizada</li>
+      <li xml:lang="es">Ventiladores en modo automático, boost fijo o curva personalizada</li>
       <li>RGB lighting effects with per-zone colors and brightness</li>
       <li xml:lang="pt_BR">Efeitos de iluminação RGB com cores e brilho por zona</li>
+      <li xml:lang="es">Efectos de iluminación RGB con colores y brillo por zona</li>
       <li>Background service that keeps your settings after login and suspend</li>
       <li xml:lang="pt_BR">Serviço em segundo plano que mantém suas configurações após login e suspensão</li>
+      <li xml:lang="es">Servicio en segundo plano que mantiene tu configuración tras iniciar sesión y suspender</li>
     </ul>
   </description>
 
@@ -72,6 +87,8 @@
     <keyword>fan</keyword>
     <keyword>RGB</keyword>
     <keyword>G-Mode</keyword>
+    <keyword xml:lang="pt_BR">ventoinha</keyword>
+    <keyword xml:lang="es">ventilador</keyword>
   </keywords>
 
   <supports>
@@ -89,6 +106,7 @@
     <release version="0.2.0" date="2026-10-15">
       <description>
         <ul>
+          <li>Interface in English, Brazilian Portuguese and Spanish, chosen from the system language</li>
           <li>Native .deb, .rpm and Arch Linux packages</li>
           <li>Loading screen while hardware is detected</li>
           <li>GitHub links in the About dialog</li>

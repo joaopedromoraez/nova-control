@@ -29,7 +29,7 @@ def apply_thermal(th: Thermal, cfg: dict) -> None:
     prof = "custom" if t.get("fan_mode") == "manual" else t.get("profile")
     if prof and prof in th.profiles() and th.profile() != prof:
         th.set_profile(prof)
-        log("perfil:", prof)
+        log("profile:", prof)
     if t.get("fan_mode") == "manual":
         for fan in th.fans():
             th.set_boost(fan.index, t["boost"].get(str(fan.index), 0))
@@ -42,20 +42,20 @@ def apply_all(th: Thermal, cfg: dict) -> None:
     try:
         apply_thermal(th, cfg)
     except ThermalError as e:
-        log("térmico:", e)
+        log("thermal:", e)
     if cfg["lighting"].get("enabled", True):
         try:
             apply_lighting_config(cfg["lighting"])
-            log("iluminação aplicada")
+            log("lighting applied")
         except (LightingError, OSError) as e:
-            log("iluminação:", e)
+            log("lighting:", e)
 
 
 def main(argv: list[str] | None = None) -> int:
     argv = argv if argv is not None else sys.argv[1:]
     th = Thermal()
     if not th.available:
-        log("driver alienware_wmi não encontrado")
+        log("alienware_wmi driver not found")
     cfg = config.load()
 
     if "--apply-once" in argv:
@@ -88,7 +88,7 @@ def main(argv: list[str] | None = None) -> int:
             cfg = config.load()
             current.clear()
         if resumed:
-            log("retorno de suspensão detectado; reaplicando")
+            log("resume from suspend detected; re-applying")
             apply_all(th, cfg)
             current.clear()
 
@@ -109,7 +109,7 @@ def main(argv: list[str] | None = None) -> int:
                     th.set_boost(fan.index, target)
                 current[fan.index] = target
         except (ThermalError, OSError) as e:
-            log("curva:", e)
+            log("fan curve:", e)
             time.sleep(10)
     return 0
 

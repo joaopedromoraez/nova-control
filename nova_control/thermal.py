@@ -12,13 +12,15 @@ import glob
 import os
 from dataclasses import dataclass
 
+from .i18n import _
+
 PROFILE_LABELS = {
-    "quiet": "Silencioso",
-    "cool": "Frio",
-    "balanced": "Equilibrado",
-    "balanced-performance": "Equilibrado+",
-    "performance": "Desempenho",
-    "custom": "Personalizado (manual)",
+    "quiet": _("Quiet"),
+    "cool": _("Cool"),
+    "balanced": _("Balanced"),
+    "balanced-performance": _("Balanced+"),
+    "performance": _("Performance"),
+    "custom": _("Custom (manual)"),
 }
 
 
@@ -53,10 +55,11 @@ def _write(path: str, value: str) -> None:
             f.write(value)
     except PermissionError as e:
         raise ThermalError(
-            f"Sem permissão para escrever em {path}. Rode install/install.sh (uma vez, com sudo)."
+            _("No permission to write to {path}. Install the nova-control package or add your user to the plugdev group.").format(path=path)
         ) from e
     except OSError as e:
-        raise ThermalError(f"Falha ao escrever '{value}' em {path}: {e}") from e
+        raise ThermalError(_("Failed to write '{value}' to {path}: {error}").format(
+            value=value, path=path, error=e)) from e
 
 
 class Thermal:
@@ -111,7 +114,7 @@ class Thermal:
 
     def set_profile(self, name: str) -> None:
         if name not in self.profiles():
-            raise ThermalError(f"Perfil desconhecido: {name}")
+            raise ThermalError(_("Unknown profile: {name}").format(name=name))
         _write(self._profile_path("profile"), name)
 
     # ---- sensores -------------------------------------------------------

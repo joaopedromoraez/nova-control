@@ -20,8 +20,8 @@ Uma alternativa nativa ao Alienware Command Center, feita para o GNOME.
 ---
 
 <p align="center">
-  <img src="docs/screenshot-curve.png" width="49%" alt="Aba Térmico e Fans com editor de curva">
-  <img src="docs/screenshot-lighting.png" width="49%" alt="Aba Iluminação com controles por zona">
+  <img src="docs/pt-BR/screenshot-curve.png" width="49%" alt="Aba Térmico e Fans com editor de curva">
+  <img src="docs/pt-BR/screenshot-lighting.png" width="49%" alt="Aba Iluminação com controles por zona">
 </p>
 
 ## Recursos
@@ -44,6 +44,9 @@ Uma alternativa nativa ao Alienware Command Center, feita para o GNOME.
 - **Serviço de usuário (systemd)** que reaplica suas configurações no login e ao voltar da suspensão
 - A curva de fans continua funcionando **com o app fechado**
 - **Linha de comando** completa para scripts e atalhos
+
+### 🌍 Vários idiomas
+- Interface em **inglês**, **português do Brasil** e **espanhol**, escolhida automaticamente pelo idioma do sistema
 
 ## Compatibilidade
 
@@ -137,6 +140,7 @@ nova-control/
 │   ├── config.py     # ~/.config/nova-control/config.json
 │   └── cli.py        # linha de comando
 ├── data/             # regras udev, serviço systemd, .desktop, metainfo AppStream e ícones
+├── po/               # traduções (.po) e o script de atualização
 ├── packaging/        # layout de instalação, configuração do nFPM e scripts do pacote
 ├── install/          # instalação a partir do código
 └── bin/nova-control
@@ -147,6 +151,27 @@ nova-control/
 - O seletor **Modo de energia** do GNOME também altera o perfil térmico. Vale a última escolha feita, no GNOME ou no Nova Control.
 - No modo **Boost fixo** o firmware é colocado no perfil `custom`, onde o controle manual das fans é confiável.
 - As configurações ficam em `~/.config/nova-control/config.json`.
+
+## Idiomas
+
+O Nova Control segue o idioma do sistema (`LANGUAGE`, `LC_ALL`, `LC_MESSAGES` ou `LANG`) e usa o inglês quando não há tradução:
+
+| Idioma | Arquivo |
+|---|---|
+| English | embutido |
+| Português (Brasil) | [`po/pt_BR.po`](po/pt_BR.po) |
+| Español | [`po/es.po`](po/es.po) |
+
+Para testar outro idioma sem mudar o sistema: `LANGUAGE=es nova-control`.
+
+### Contribuindo com uma tradução
+
+1. Crie o arquivo do seu idioma (por exemplo, francês): `python3 po/update.py --new fr`
+2. Traduza o `po/fr.po` em qualquer editor de `.po`, como o [Poedit](https://poedit.net/), ou num editor de texto. Mantenha marcadores como `{path}` sem alteração.
+3. Confira se nada ficou faltando: `python3 po/update.py --check`
+4. Abra um pull request.
+
+Depois de mudar textos no código, rode `python3 po/update.py` para atualizar o modelo e todos os `.po`.
 
 ## Desinstalar
 

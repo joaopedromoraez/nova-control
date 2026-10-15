@@ -1,0 +1,500 @@
+# Nova Control translations (pt_BR).
+# This file is distributed under the same license as the Nova Control package (MIT).
+msgid ""
+msgstr ""
+"Project-Id-Version: nova-control\n"
+"Report-Msgid-Bugs-To: https://github.com/joaopedromoraez/nova-control/issues\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: nova_control/cli.py:17
+msgid "color must be RRGGBB"
+msgstr "a cor deve estar no formato RRGGBB"
+
+#: nova_control/cli.py:23
+#, python-brace-format
+msgid "Profile: {profile}  (options: {options})"
+msgstr "Perfil: {profile}  (opções: {options})"
+
+#: nova_control/cli.py:28
+#, python-brace-format
+msgid "  {label:<8} {rpm:5d} RPM  (max {max})  boost {boost}/255"
+msgstr "  {label:<8} {rpm:5d} RPM  (máx {max})  boost {boost}/255"
+
+#: nova_control/cli.py:30
+#, python-brace-format
+msgid "Write access: {answer}"
+msgstr "Escrita permitida: {answer}"
+
+#: nova_control/cli.py:30
+msgid "yes"
+msgstr "sim"
+
+#: nova_control/cli.py:30
+msgid "no"
+msgstr "não"
+
+#: nova_control/cli.py:36
+#, python-brace-format
+msgid "LEDs: {device}  firmware {firmware}  platform {platform}  zones {zones}"
+msgstr "LEDs: {device}  firmware {firmware}  plataforma {platform}  zonas {zones}"
+
+#: nova_control/cli.py:42
+msgid "LEDs: AW-ELC controller not found"
+msgstr "LEDs: controlador AW-ELC não encontrado"
+
+#: nova_control/cli.py:51
+#, python-brace-format
+msgid "Profile: {profile}"
+msgstr "Perfil: {profile}"
+
+#: nova_control/cli.py:63
+#, python-brace-format
+msgid "Fan {fan}: boost {percent}%"
+msgstr "Fan {fan}: boost {percent}%"
+
+#: nova_control/cli.py:80
+msgid "Lighting applied"
+msgstr "Iluminação aplicada"
+
+#: nova_control/cli.py:91
+msgid "Fan control, thermal profiles and RGB lighting for Alienware laptops."
+msgstr "Controle de fans, perfis térmicos e iluminação RGB para notebooks Alienware."
+
+#: nova_control/cli.py:93
+msgid "open the graphical interface (default)"
+msgstr "abre a interface gráfica (padrão)"
+
+#: nova_control/cli.py:94
+msgid "show temperatures, fans, profile and LEDs"
+msgstr "mostra temperaturas, fans, perfil e LEDs"
+
+#: nova_control/cli.py:95
+msgid "set the thermal profile"
+msgstr "define o perfil térmico"
+
+#: nova_control/cli.py:98
+msgid "manual boost for one fan (0-100%%)"
+msgstr "boost manual de uma fan (0-100%%)"
+
+#: nova_control/cli.py:102
+msgid "set the lighting"
+msgstr "define a iluminação"
+
+#: nova_control/cli.py:110
+msgid "flash a single zone"
+msgstr "pisca apenas uma zona"
+
+#: nova_control/cli.py:113
+msgid "service: apply settings and run the fan curve"
+msgstr "serviço: aplica as configurações e a curva de fans"
+
+#: nova_control/cli.py:114
+msgid "apply the saved settings once"
+msgstr "aplica a configuração salva uma vez"
+
+#: nova_control/cli.py:129
+#, python-brace-format
+msgid "Error: {error}"
+msgstr "Erro: {error}"
+
+#: nova_control/config.py:95
+#, python-brace-format
+msgid "Zone {number}"
+msgstr "Zona {number}"
+
+#: nova_control/gui.py:60
+msgid "Not found"
+msgstr "Não encontrado"
+
+#: nova_control/gui.py:68
+#, python-brace-format
+msgid "{count} zone"
+msgid_plural "{count} zones"
+msgstr[0] "{count} zona"
+msgstr[1] "{count} zonas"
+
+#: nova_control/gui.py:70
+#, python-brace-format
+msgid "{device} · firmware {firmware} · platform 0x{platform:04x} · {zones}"
+msgstr "{device} · firmware {firmware} · plataforma 0x{platform:04x} · {zones}"
+
+#: nova_control/gui.py:72
+#, python-brace-format
+msgid "{device} · firmware {firmware} · no configuration response"
+msgstr "{device} · firmware {firmware} · sem resposta de configuração"
+
+#: nova_control/gui.py:259
+msgid "Starting…"
+msgstr "Iniciando…"
+
+#: nova_control/gui.py:260
+#, python-brace-format
+msgid "version {version}"
+msgstr "versão {version}"
+
+#: nova_control/gui.py:271
+msgid "Reading thermal sensors…"
+msgstr "Lendo sensores térmicos…"
+
+#: nova_control/gui.py:274
+msgid "Connecting to the LED controller…"
+msgstr "Conectando ao controlador de LEDs…"
+
+#: nova_control/gui.py:276
+msgid "Checking the background service…"
+msgstr "Verificando o serviço em segundo plano…"
+
+#: nova_control/gui.py:278
+msgid "Ready"
+msgstr "Pronto"
+
+#: nova_control/gui.py:297
+msgid "About"
+msgstr "Sobre"
+
+#: nova_control/gui.py:302
+msgid "How to fix"
+msgstr "Como corrigir"
+
+#: nova_control/gui.py:309
+msgid "Thermal and fans"
+msgstr "Térmico e Fans"
+
+#: nova_control/gui.py:311
+msgid "Lighting"
+msgstr "Iluminação"
+
+#: nova_control/gui.py:331
+msgid "alienware_wmi driver not loaded"
+msgstr "driver alienware_wmi não carregado"
+
+#: nova_control/gui.py:333
+msgid "no permission for fans and profiles"
+msgstr "sem permissão para fans e perfis"
+
+#: nova_control/gui.py:336
+msgid "LED controller not found"
+msgstr "controlador de LED não encontrado"
+
+#: nova_control/gui.py:339
+msgid "no permission for the LED controller"
+msgstr "sem permissão para o controlador de LED"
+
+#: nova_control/gui.py:341
+#, python-brace-format
+msgid "Limited access: {problems}"
+msgstr "Acesso limitado: {problems}"
+
+#: nova_control/gui.py:348
+msgid "Hardware permissions"
+msgstr "Permissões de hardware"
+
+#: nova_control/gui.py:349
+msgid ""
+"Controlling fans, profiles and LEDs requires access to kernel files that, by default, only root can write. Nova Control grants that access to the 'plugdev' group.\n"
+"\n"
+"1. Make sure the nova-control package is installed (or run sudo ./install/install.sh from the source code).\n"
+"2. Add your user to the group, if it isn't already:\n"
+"\n"
+"sudo usermod -aG plugdev $USER\n"
+"\n"
+"3. Log out and back in."
+msgstr ""
+"O controle de fans, perfis e LEDs exige acesso a arquivos do kernel que, por padrão, só o root pode escrever. O Nova Control libera esse acesso para o grupo 'plugdev'.\n"
+"\n"
+"1. Confirme que o pacote nova-control está instalado (ou rode sudo ./install/install.sh a partir do código).\n"
+"2. Coloque seu usuário no grupo, se ainda não estiver:\n"
+"\n"
+"sudo usermod -aG plugdev $USER\n"
+"\n"
+"3. Saia e entre de novo na sessão."
+
+#: nova_control/gui.py:357
+msgid "OK"
+msgstr "OK"
+
+#: nova_control/gui.py:364
+msgid "Fan control, thermal profiles and RGB lighting for Alienware laptops on Linux."
+msgstr "Controle de fans, perfis térmicos e iluminação RGB para notebooks Alienware no Linux."
+
+#: nova_control/gui.py:373
+msgid "GitHub repository"
+msgstr "Repositório no GitHub"
+
+#: nova_control/gui.py:374
+msgid "Author on GitHub"
+msgstr "GitHub do autor"
+
+#: nova_control/gui.py:382
+msgid "Monitor"
+msgstr "Monitor"
+
+#: nova_control/gui.py:406
+msgid "alienware_wmi driver not found."
+msgstr "Driver alienware_wmi não encontrado."
+
+#: nova_control/gui.py:412
+msgid "Thermal profile"
+msgstr "Perfil térmico"
+
+#: nova_control/gui.py:413
+msgid "“Performance” enables G-Mode. GNOME's power mode switch also changes this profile."
+msgstr "“Desempenho” ativa o G-Mode. O seletor de modo de energia do GNOME também altera este perfil."
+
+#: nova_control/gui.py:428
+msgid "Fan control"
+msgstr "Controle das fans"
+
+#: nova_control/gui.py:430
+msgid "Automatic"
+msgstr "Automático"
+
+#: nova_control/gui.py:430
+msgid "Fixed boost"
+msgstr "Boost fixo"
+
+#: nova_control/gui.py:430
+msgid "Custom curve"
+msgstr "Curva personalizada"
+
+#: nova_control/gui.py:441
+msgid "The firmware controls the fans according to the selected thermal profile."
+msgstr "O firmware controla as fans de acordo com o perfil térmico selecionado."
+
+#: nova_control/gui.py:448
+msgid "Boost above the base speed"
+msgstr "Boost acima da rotação base"
+
+#: nova_control/gui.py:462
+msgid "Background service"
+msgstr "Serviço em segundo plano"
+
+#: nova_control/gui.py:463
+msgid "Required for the curve to work with the app closed"
+msgstr "Necessário para a curva funcionar com o app fechado"
+
+#: nova_control/gui.py:474
+#, python-brace-format
+msgid "{fan} — drag the points"
+msgstr "{fan} — arraste os pontos"
+
+#: nova_control/gui.py:476
+msgid "Default"
+msgstr "Padrão"
+
+#: nova_control/gui.py:529
+msgid "Turn on the background service for the curve to work"
+msgstr "Ative o serviço em segundo plano para a curva funcionar"
+
+#: nova_control/gui.py:551
+#, python-brace-format
+msgid "Failed: {error}"
+msgstr "Falha: {error}"
+
+#: nova_control/gui.py:551
+msgid "service not installed"
+msgstr "serviço não instalado"
+
+#: nova_control/gui.py:561
+msgid "Active — applying settings and curve"
+msgstr "Ativo — aplicando configurações e curva"
+
+#: nova_control/gui.py:562
+msgid "Inactive — the curve will not be applied"
+msgstr "Inativo — a curva não será aplicada"
+
+#: nova_control/gui.py:577
+#, python-brace-format
+msgid "{rpm} RPM  ·  max {max}"
+msgstr "{rpm} RPM  ·  máx {max}"
+
+#: nova_control/gui.py:579
+#, python-brace-format
+msgid "Boost: {percent}%"
+msgstr "Boost: {percent}%"
+
+#: nova_control/gui.py:596
+msgid "Controller"
+msgstr "Controlador"
+
+#: nova_control/gui.py:597
+msgid "Searching…"
+msgstr "Procurando…"
+
+#: nova_control/gui.py:598
+msgid "Detect zones"
+msgstr "Detectar zonas"
+
+#: nova_control/gui.py:604
+msgid "General"
+msgstr "Geral"
+
+#: nova_control/gui.py:605
+msgid "Apply lighting at login"
+msgstr "Aplicar iluminação ao iniciar sessão"
+
+#: nova_control/gui.py:609
+msgid "Brightness"
+msgstr "Brilho"
+
+#: nova_control/gui.py:620
+msgid "Same effect on all zones"
+msgstr "Mesmo efeito em todas as zonas"
+
+#: nova_control/gui.py:621
+msgid "Changes to the first zone are copied to the others"
+msgstr "Alterações na primeira zona são copiadas para as demais"
+
+#: nova_control/gui.py:627
+msgid "Alien"
+msgstr "Alien"
+
+#: nova_control/gui.py:627
+msgid "Red"
+msgstr "Vermelho"
+
+#: nova_control/gui.py:627
+msgid "Green"
+msgstr "Verde"
+
+#: nova_control/gui.py:628
+msgid "Purple"
+msgstr "Roxo"
+
+#: nova_control/gui.py:628
+msgid "White"
+msgstr "Branco"
+
+#: nova_control/gui.py:632
+msgid "Rainbow"
+msgstr "Arco-íris"
+
+#: nova_control/gui.py:639
+msgid "Zones"
+msgstr "Zonas"
+
+#: nova_control/gui.py:639
+msgid "Use “Identify” to find out which zone is which, then rename it."
+msgstr "Use “Identificar” para descobrir qual zona é qual e renomeie-a."
+
+#: nova_control/gui.py:671
+msgid "Name"
+msgstr "Nome"
+
+#: nova_control/gui.py:676
+msgid "Effect"
+msgstr "Efeito"
+
+#: nova_control/gui.py:680
+msgid "Colors"
+msgstr "Cores"
+
+#: nova_control/gui.py:688
+msgid "Speed"
+msgstr "Velocidade"
+
+#: nova_control/gui.py:695
+msgid "Identify zone"
+msgstr "Identificar zona"
+
+#: nova_control/gui.py:695
+msgid "Flashes only this zone in white for 3 s"
+msgstr "Pisca só esta zona em branco por 3 s"
+
+#: nova_control/gui.py:696
+msgid "Identify"
+msgstr "Identificar"
+
+#: nova_control/lighting.py:52
+msgid "Static"
+msgstr "Estático"
+
+#: nova_control/lighting.py:53
+msgid "Breathing"
+msgstr "Respiração"
+
+#: nova_control/lighting.py:54
+msgid "Pulse"
+msgstr "Piscar"
+
+#: nova_control/lighting.py:55
+msgid "Morph (2 colors)"
+msgstr "Transição (2 cores)"
+
+#: nova_control/lighting.py:56
+msgid "Spectrum"
+msgstr "Espectro"
+
+#: nova_control/lighting.py:57
+msgid "Rainbow wave"
+msgstr "Onda arco-íris"
+
+#: nova_control/lighting.py:58
+msgid "Off"
+msgstr "Desligado"
+
+#: nova_control/lighting.py:138
+#, python-brace-format
+msgid "Unknown effect: {effect}"
+msgstr "Efeito desconhecido: {effect}"
+
+#: nova_control/lighting.py:145
+msgid "AW-ELC lighting controller (187c:0550) not found"
+msgstr "Controlador de iluminação AW-ELC (187c:0550) não encontrado"
+
+#: nova_control/lighting.py:150
+#, python-brace-format
+msgid "No permission to access {path}. Install the nova-control package or add your user to the plugdev group."
+msgstr "Sem permissão para acessar {path}. Instale o pacote nova-control ou coloque seu usuário no grupo plugdev."
+
+#: nova_control/lighting.py:162
+msgid "The LED controller is busy in another process"
+msgstr "O controlador de LED está ocupado por outro processo"
+
+#: nova_control/lighting.py:190
+#, python-brace-format
+msgid "Communication with the LED controller failed: {error}"
+msgstr "Falha de comunicação com o controlador de LED: {error}"
+
+#: nova_control/thermal.py:18
+msgid "Quiet"
+msgstr "Silencioso"
+
+#: nova_control/thermal.py:19
+msgid "Cool"
+msgstr "Frio"
+
+#: nova_control/thermal.py:20
+msgid "Balanced"
+msgstr "Equilibrado"
+
+#: nova_control/thermal.py:21
+msgid "Balanced+"
+msgstr "Equilibrado+"
+
+#: nova_control/thermal.py:22
+msgid "Performance"
+msgstr "Desempenho"
+
+#: nova_control/thermal.py:23
+msgid "Custom (manual)"
+msgstr "Personalizado (manual)"
+
+#: nova_control/thermal.py:58
+#, python-brace-format
+msgid "No permission to write to {path}. Install the nova-control package or add your user to the plugdev group."
+msgstr "Sem permissão para escrever em {path}. Instale o pacote nova-control ou coloque seu usuário no grupo plugdev."
+
+#: nova_control/thermal.py:61
+#, python-brace-format
+msgid "Failed to write '{value}' to {path}: {error}"
+msgstr "Falha ao escrever '{value}' em {path}: {error}"
+
+#: nova_control/thermal.py:117
+#, python-brace-format
+msgid "Unknown profile: {name}"
+msgstr "Perfil desconhecido: {name}"

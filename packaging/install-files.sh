@@ -37,6 +37,8 @@ fi
 
 install -d "$LIBDIR/nova_control"
 install -m 644 "$SRC"/nova_control/*.py "$LIBDIR/nova_control/"
+install -d "$LIBDIR/po"
+install -m 644 "$SRC"/po/*.po "$LIBDIR/po/"
 install -Dm 755 "$SRC/bin/nova-control" "$BINDIR/nova-control"
 install -Dm 644 "$SRC/data/99-nova-control.rules" "$UDEVDIR/99-nova-control.rules"
 install -Dm 644 "$SRC/data/nova-control.service" "$USERUNITDIR/nova-control.service"

@@ -48,6 +48,9 @@ Dell ships the **Alienware Command Center** only for Windows. On Linux there is 
 - The custom fan curve keeps working **with the app closed**
 - A full **command-line interface** for scripts and keyboard shortcuts
 
+### 🌍 Multilingual
+- Interface in **English**, **Brazilian Portuguese** and **Spanish**, chosen automatically from your system language
+
 ## Compatibility
 
 | Tested on | |
@@ -140,6 +143,7 @@ nova-control/
 │   ├── config.py     # ~/.config/nova-control/config.json
 │   └── cli.py        # command line
 ├── data/             # udev rules, systemd unit, .desktop, AppStream metainfo, icons
+├── po/               # translations (.po) and the update script
 ├── packaging/        # install layout, nFPM config and package scripts
 ├── install/          # install from source
 └── bin/nova-control
@@ -149,8 +153,28 @@ nova-control/
 
 - GNOME's **Power Mode** switch also changes the thermal profile. The most recent choice wins, whether made in GNOME or in Nova Control.
 - In **Fixed boost** mode the firmware is switched to the `custom` profile, where manual fan control is reliable.
-- The interface is currently in Brazilian Portuguese. Translations are welcome.
 - Settings are stored in `~/.config/nova-control/config.json`.
+
+## Languages
+
+Nova Control follows your system language (`LANGUAGE`, `LC_ALL`, `LC_MESSAGES` or `LANG`) and falls back to English:
+
+| Language | File |
+|---|---|
+| English | built in |
+| Português (Brasil) | [`po/pt_BR.po`](po/pt_BR.po) |
+| Español | [`po/es.po`](po/es.po) |
+
+To try another language without changing your system: `LANGUAGE=es nova-control`.
+
+### Contributing a translation
+
+1. Create the file for your language (for example French): `python3 po/update.py --new fr`
+2. Translate `po/fr.po` with any `.po` editor, such as [Poedit](https://poedit.net/), or a text editor. Keep placeholders like `{path}` unchanged.
+3. Check that nothing is missing: `python3 po/update.py --check`
+4. Open a pull request.
+
+After changing texts in the code, run `python3 po/update.py` to update the template and every `.po` file.
 
 ## Uninstall
 

@@ -32,6 +32,7 @@ jobs:
       - name: Validate
         run: |
           python3 -m py_compile nova_control/*.py
+          python3 po/update.py --check
           desktop-file-validate data/io.github.nova_control.desktop
           appstreamcli validate --no-net data/io.github.nova_control.metainfo.xml
 
@@ -68,6 +69,8 @@ jobs:
           test -f /usr/share/metainfo/io.github.nova_control.metainfo.xml
           test -f /usr/share/icons/hicolor/scalable/apps/io.github.nova_control.svg
           python3 -c "import sys; sys.path.insert(0, '/usr/share/nova-control'); import nova_control.gui"
+          LANGUAGE=es nova-control --help | grep -q "abre la interfaz gráfica"
+          LANGUAGE=pt_BR nova-control --help | grep -q "abre a interface gráfica"
           apt-get remove -y nova-control
           test ! -e /usr/bin/nova-control
           test ! -e /usr/share/nova-control

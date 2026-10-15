@@ -19,6 +19,8 @@ import os
 import time
 from dataclasses import dataclass
 
+from .i18n import _
+
 VENDOR = 0x187C
 PRODUCTS = (0x0550, 0x0551)
 REPORT_SIZE = 33
@@ -47,13 +49,13 @@ ACT_MORPH = 0x02
 TEMPO_MAX = 250
 
 EFFECTS = {
-    "static": "Estático",
-    "breathing": "Respiração",
-    "pulse": "Piscar",
-    "morph": "Transição (2 cores)",
-    "spectrum": "Espectro",
-    "wave": "Onda arco-íris",
-    "off": "Desligado",
+    "static": _("Static"),
+    "breathing": _("Breathing"),
+    "pulse": _("Pulse"),
+    "morph": _("Morph (2 colors)"),
+    "spectrum": _("Spectrum"),
+    "wave": _("Rainbow wave"),
+    "off": _("Off"),
 }
 
 SPECTRUM = [
@@ -100,7 +102,7 @@ def find_device() -> str | None:
             continue
         for line in ue.splitlines():
             if line.startswith("HID_ID="):
-                _, vid, pid = line.split("=", 1)[1].split(":")
+                _bus, vid, pid = line.split("=", 1)[1].split(":")
                 if int(vid, 16) == VENDOR and int(pid, 16) in PRODUCTS:
                     return "/dev/" + os.path.basename(node)
     return None
@@ -133,19 +135,19 @@ def build_actions(effect: str, colors: list[Color], speed: int, phase: int = 0) 
         step = max(150, dur // 3)
         seq = SPECTRUM[phase % len(SPECTRUM):] + SPECTRUM[: phase % len(SPECTRUM)]
         return [Action(ACT_MORPH, step, tempo, c) for c in seq]
-    raise LightingError(f"Efeito desconhecido: {effect}")
+    raise LightingError(_("Unknown effect: {effect}").format(effect=effect))
 
 
 class ELC:
     def __init__(self, path: str | None = None) -> None:
         self.path = path or find_device()
         if not self.path:
-            raise LightingError("Controlador AW-ELC (187c:0550) não encontrado")
+            raise LightingError(_("AW-ELC lighting controller (187c:0550) not found"))
         try:
             self.fd = os.open(self.path, os.O_RDWR | os.O_NONBLOCK)
         except PermissionError as e:
             raise LightingError(
-                f"Sem permissão em {self.path}. Rode install/install.sh (uma vez, com sudo)."
+                _("No permission to access {path}. Install the nova-control package or add your user to the plugdev group.").format(path=self.path)
             ) from e
         # um processo por vez (GUI, serviço e CLI compartilham o controlador;
         # comandos intercalados misturam as respostas)
@@ -157,7 +159,7 @@ class ELC:
             except BlockingIOError:
                 if time.monotonic() > deadline:
                     os.close(self.fd)
-                    raise LightingError("Controlador de LED ocupado por outro processo")
+                    raise LightingError(_("The LED controller is busy in another process"))
                 time.sleep(0.05)
 
     def close(self) -> None:
@@ -177,7 +179,7 @@ class ELC:
     def send(self, cmd: int, payload: bytes = b"", delay: float = 0.06) -> bytes | None:
         body = bytes([0x03, cmd]) + payload
         if len(body) > REPORT_SIZE:
-            raise LightingError("Pacote maior que 33 bytes")
+            raise LightingError("Packet larger than 33 bytes")
         buf = bytearray(b"\x00" + body.ljust(REPORT_SIZE, b"\x00"))  # 0x00 = sem report ID
         try:
             fcntl.ioctl(self.fd, _hidioc(0x06, len(buf)), buf)
@@ -185,7 +187,7 @@ class ELC:
             resp = bytearray(len(buf))
             fcntl.ioctl(self.fd, _hidioc(0x07, len(resp)), resp)
         except OSError as e:
-            raise LightingError(f"Falha de comunicação com o controlador: {e}") from e
+            raise LightingError(_("Communication with the LED controller failed: {error}").format(error=e)) from e
         return bytes(resp[1:])  # remove o byte de report ID
 
     # ---- consultas ------------------------------------------------------
