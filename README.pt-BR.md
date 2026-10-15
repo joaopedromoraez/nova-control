@@ -73,17 +73,27 @@ cat /sys/class/platform-profile/*/name
 
 ## Instalação
 
-### Dependências
+Requer **GTK 4.14+** e **libadwaita 1.7+**: Ubuntu 25.04+, Fedora 42+, Debian 13+, Arch Linux e derivados.
 
-No Ubuntu/Debian (já vêm instaladas no Ubuntu com GNOME):
+### Pacotes (recomendado)
 
-```bash
-sudo apt install python3 python3-gi gir1.2-gtk-4.0 gir1.2-adw-1
-```
+Baixe o pacote da sua distro na [última release](https://github.com/joaopedromoraez/nova-control/releases/latest) e instale:
 
-O app requer GTK 4.14+ e libadwaita 1.7+.
+| Distro | Comando |
+|---|---|
+| Ubuntu, Debian, Pop!_OS, Mint | `sudo apt install ./nova-control_*_all.deb` |
+| Fedora, Nobara | `sudo dnf install ./nova-control-*.noarch.rpm` |
+| Arch, Manjaro, CachyOS | `sudo pacman -U nova-control-*-any.pkg.tar.zst` |
 
-### Instalar
+O pacote:
+
+1. instala as **regras udev** que permitem controlar o hardware **sem root** (acesso para o grupo `plugdev`);
+2. adiciona ao grupo `plugdev` o usuário que fez a instalação;
+3. ativa o serviço de usuário `nova-control.service` para todos os usuários.
+
+Saia e entre de novo na sessão uma vez, depois abra **Nova Control** no menu de aplicativos.
+
+### A partir do código
 
 ```bash
 git clone https://github.com/joaopedromoraez/nova-control.git
@@ -91,17 +101,7 @@ cd nova-control
 sudo ./install/install.sh
 ```
 
-O instalador:
-
-1. copia o app para `/opt/nova-control` e cria o comando `nova-control`;
-2. instala as **regras udev** que permitem controlar o hardware **sem root** (acesso para o grupo `plugdev`);
-3. adiciona o atalho no menu de aplicativos e os ícones;
-4. ativa o serviço de usuário `nova-control.service`.
-
-Depois é só abrir **Nova Control** no menu de aplicativos.
-
-> [!TIP]
-> Se o seu usuário não estava no grupo `plugdev`, o instalador o adiciona. Nesse caso, saia e entre de novo na sessão.
+Isso instala em `/usr/local`, com o mesmo layout dos pacotes. Para remover: `sudo ./install/install.sh --uninstall`.
 
 ## Linha de comando
 
@@ -136,8 +136,9 @@ nova-control/
 │   ├── daemon.py     # serviço: reaplica configurações e roda a curva
 │   ├── config.py     # ~/.config/nova-control/config.json
 │   └── cli.py        # linha de comando
-├── data/icons/       # ícones do app
-├── install/          # instalador, regras udev, .desktop e serviço systemd
+├── data/             # regras udev, serviço systemd, .desktop, metainfo AppStream e ícones
+├── packaging/        # layout de instalação, configuração do nFPM e scripts do pacote
+├── install/          # instalação a partir do código
 └── bin/nova-control
 ```
 
@@ -149,13 +150,7 @@ nova-control/
 
 ## Desinstalar
 
-```bash
-systemctl --user disable --now nova-control.service
-```
-
-```bash
-sudo rm -rf /opt/nova-control /usr/local/bin/nova-control /etc/udev/rules.d/99-nova-control.rules /usr/share/applications/io.github.nova_control.desktop /usr/lib/systemd/user/nova-control.service /usr/share/icons/hicolor/scalable/apps/io.github.nova_control*.svg /usr/share/icons/hicolor/symbolic/apps/io.github.nova_control-symbolic.svg
-```
+Use o gerenciador de pacotes, por exemplo `sudo apt remove nova-control`, `sudo dnf remove nova-control` ou `sudo pacman -R nova-control`. Suas configurações ficam em `~/.config/nova-control/`.
 
 ## Créditos
 
