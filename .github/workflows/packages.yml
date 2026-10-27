@@ -65,6 +65,7 @@ jobs:
           apt-get update
           apt-get install -y ./dist/*.deb
           nova-control --help
+          test "$(head -1 /usr/bin/nova-control)" = "#!/usr/bin/python3"
           test -f /usr/lib/udev/rules.d/99-nova-control.rules
           test -f /usr/share/metainfo/io.github.nova_control.metainfo.xml
           test -f /usr/share/icons/hicolor/scalable/apps/io.github.nova_control.svg

@@ -9,6 +9,9 @@ set -eu
 SRC="$(cd "$(dirname "$0")/.." && pwd)"
 PREFIX="${PREFIX:-/usr/local}"
 DESTDIR="${DESTDIR:-}"
+# Interpretador fixo da cópia instalada: o python3 do sistema é o que enxerga o PyGObject
+# (python3-gi). Com "env python3", um Python do uv/pyenv/conda no PATH quebraria o app.
+PYTHON="${PYTHON:-/usr/bin/python3}"
 APP_ID=io.github.nova_control
 
 BINDIR="$DESTDIR$PREFIX/bin"
@@ -39,7 +42,9 @@ install -d "$LIBDIR/nova_control"
 install -m 644 "$SRC"/nova_control/*.py "$LIBDIR/nova_control/"
 install -d "$LIBDIR/po"
 install -m 644 "$SRC"/po/*.po "$LIBDIR/po/"
-install -Dm 755 "$SRC/bin/nova-control" "$BINDIR/nova-control"
+install -d "$BINDIR"
+sed "1s|^#!.*|#!$PYTHON|" "$SRC/bin/nova-control" > "$BINDIR/nova-control"
+chmod 755 "$BINDIR/nova-control"
 install -Dm 644 "$SRC/data/99-nova-control.rules" "$UDEVDIR/99-nova-control.rules"
 install -Dm 644 "$SRC/data/nova-control.service" "$USERUNITDIR/nova-control.service"
 install -Dm 644 "$SRC/data/$APP_ID.desktop" "$DATADIR/applications/$APP_ID.desktop"

@@ -103,6 +103,13 @@
   <content_rating type="oars-1.1"/>
 
   <releases>
+    <release version="0.3.2" date="2026-10-27">
+      <description>
+        <ul>
+          <li>Fix the app not opening when another Python (uv, pyenv, conda) comes first in PATH</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.3.1" date="2026-10-15">
       <description>
         <ul>
